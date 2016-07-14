@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>메모리 데이터베이스</title>
+	<style>
+		#wrapper{
+			width:650px;
+			height:600px;
+			margin:auto;
+		}
+		#leftSide{
+			width:150px;
+			height:600px;
+			float:left;
+			background:pink;
+			text-align:center;
+		}
+		#rightSide{
+			width:500px;
+			height:600px;
+			float:left;
+			background:yellow;
+			text-align:center;
+		}
+	</style>
+	<script>
+	var bt;
+	var search_bt;
+	var m_id;
+	var pw;
+	var m_name;
+	var m_money;
+	var rightSide;
+	var table;
+	var memberList=new Array();
+	//var count=0;
+
+	window.addEventListener("load",function(){
+		init();
+	});
+
+	function init(){
+		bt=document.getElementById("bt");
+		search_bt=document.getElementById("search_bt");
+		m_id=document.getElementById("m_id");
+		pw=document.getElementById("pw");
+		m_name=document.getElementById("m_name");
+		m_money=document.getElementById("m_money");
+		rightSide=document.getElementById("rightSide");
+
+		getTitle();
+
+		bt.addEventListener("click",function(){
+			if(m_id.value.length==0){
+				alert("id를 입력하세요");
+				m_id.focus();
+				return;
+			}else if(!pw.value){
+				alert("pw를 입력하세요");
+				pw.focus();
+				return;
+			}else if(!m_name.value){
+				alert("이름을 입력하세요");
+				m_name.focus();
+				return;
+			}else if(!m_money.value){
+				alert("금액을 입력하세요");
+				m_money.focus();
+				return;
+			}else if(isNaN(m_money.value)){
+				alert("금액은 숫자만 입력하세요");
+				m_money.focus();
+				return;
+			}
+			//
+			var member=[m_id.value, pw.value, m_name.value, m_money.value];
+			memberList.push(member);
+			//
+			initTable();
+			getList();
+			
+			m_id.value="";
+			pw.value="";
+			m_name.value="";
+			m_money.value="";
+		});
+
+		search_bt.addEventListener("click",function(){
+			var s_id=document.getElementById("s_id");
+			var sel=document.getElementById("sel");
+			if(sel.value==5){
+				initTable();
+				getList();
+				return;
+			}
+			for(var i=0;i<memberList.length;i++){
+				if(memberList[i][sel.value]==s_id.value){
+					initTable();
+					getResult(i);
+					return;
+				}
+			}
+			alert("찾지 못 했습니다.");
+		});
+	}
+
+	function initTable(){
+		table.innerHTML="";
+		getTitle();
+	}
+
+	function getList(){
+		///
+		for(var i=memberList.length-1;i>=0;i--){
+			var tr=document.createElement("tr");
+			var ntd=document.createElement("td");
+			ntd.innerText=i+1;
+			tr.appendChild(ntd);
+			for(var j=0;j<memberList[i].length;j++){
+				var td=document.createElement("td");
+				td.innerText=memberList[i][j];
+				tr.appendChild(td);
+			}
+			table.appendChild(tr);
+		}
+		
+		//
+		sum();
+	}
+
+	function getTitle(){
+		table=document.createElement("table");
+		table.style.width=450+"px";
+		table.style.border="1px";
+
+		var title=document.createElement("tr");
+
+		var no_td=document.createElement("td"); //no용
+		no_td.innerText="번호";
+		no_td.style.border="1px solid black";
+		var id_td=document.createElement("td"); //id용
+		id_td.innerText="ID";
+		id_td.style.border="1px solid black";
+		var pw_td=document.createElement("td"); //pw용
+		pw_td.innerText="패스워드";
+		pw_td.style.border="1px solid black";
+		var name_td=document.createElement("td"); //이름용
+		name_td.innerText="이름";
+		name_td.style.border="1px solid black";
+		var money_td=document.createElement("td"); //금액용
+		money_td.innerText="금액";
+		money_td.style.border="1px solid black";
+
+		title.appendChild(no_td);
+		title.appendChild(id_td);
+		title.appendChild(pw_td);
+		title.appendChild(name_td);
+		title.appendChild(money_td);
+
+		table.appendChild(title);
+
+		rightSide.appendChild(table);
+	}
+	function sum(){
+		var sum_money=0;
+		var sum_tr=document.createElement("tr");
+		var ttd=document.createElement("td");
+		ttd.innerText="합계";
+		ttd.style.border="1px solid black";
+		sum_tr.appendChild(ttd);
+		var sum_td=document.createElement("td");
+		sum_td.colSpan="4";
+		sum_td.style.textAlign="right";
+		sum_td.style.border="1px solid black";
+		for(var i=0;i<memberList.length;i++){
+			sum_money+=parseInt(memberList[i][3]);
+		}
+		sum_td.innerText=sum_money;
+		sum_tr.appendChild(sum_td);
+		table.appendChild(sum_tr);
+	}
+	function getResult(n){
+		var tr=document.createElement("tr");
+		var ntd=document.createElement("td");
+		ntd.innerText=1;
+		tr.appendChild(ntd);
+		for(var i=0;i<memberList[n].length;i++){
+			var td=document.createElement("td");
+			td.innerText=memberList[n][i];
+			tr.appendChild(td);
+		}
+		table.appendChild(tr);
+		var sum_tr=document.createElement("tr");
+		var ttd=document.createElement("td");
+		ttd.innerText="합계";
+		ttd.style.border="1px solid black";
+		sum_tr.appendChild(ttd);
+		var sum_td=document.createElement("td");
+		sum_td.colSpan="4";
+		sum_td.style.textAlign="right";
+		sum_td.style.border="1px solid black";
+		sum_td.innerText=parseInt(memberList[n][3]);
+		sum_tr.appendChild(sum_td);
+		table.appendChild(sum_tr);
+	}
+
+	</script>
+</head>
+<body>
+<div id="wrapper">
+	<div id="leftSide">
+		ID:<input type="text" size="7" maxlength="12" id="m_id"><br>
+		PW:<input type="password" size="7" maxlength="8" id="pw"><br>
+		이름:<input type="text" size="7" maxlength="12" id="m_name"><br>
+		금액:<input type="text" size="7" maxlength="12" id="m_money"><p>
+		<input type="button" value="등록" id="bt">
+	</div>
+	<div id="rightSide">
+		<select id="sel">
+			<option value="5">전체</option>
+			<option value="0">아이디</option>
+			<option value="2">이름</option>
+		</select>
+		<input type="text" size="7" maxlength="12" id="s_id">
+		<input type="button" value="검색" id="search_bt">
+	</div>
+</div>
+</body>
+</html>

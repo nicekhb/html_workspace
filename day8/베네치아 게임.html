@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>베네치아 게임</title>
+	<style>
+	#wrapper{
+		width:1000px;
+		height:800px;
+		margin:auto;
+	}
+	#stage{
+		width:100%;
+		height:650px;
+		background:#ccffff;
+	}
+	#controller{
+		width:100%;
+		height:150px;
+		background:#ffcc99;
+		text-align:center;
+	}
+	#hp{
+		width:170px;
+		height:150px;
+		background:pink;
+		float:left;
+	}
+	#info{
+		width:420px;
+		height:150px;
+		/*background:orange;*/
+		float:left;
+	}
+	#keyword{
+		width:250px;
+		height:50px;
+		background:orange;
+		font-size:30pt;
+	}
+	</style>
+	<script>
+		var stage;
+		var wordArray;
+		var hb;
+		var hpArray;
+		var keyword;
+		var score;
+		var jumsu=0;
+		var word=["학교",
+						"어머니",
+						"경복궁",
+						"병원",
+						"선생님",
+						"우주선",
+						"태풍",
+						"장마",
+						"목성",
+						"컴퓨터"];
+		var step=10; //몇 픽셀씩 내려오게 할지
+		var st;
+		var hit=0;
+		function init(){
+			stage=document.getElementById("stage");
+			hb=document.getElementById("hb");
+			keyword=document.getElementById("keyword");
+			score=document.getElementById("score");
+			hpArray=new Array(3);
+			wordArray=new Array(word.length);
+			createHp();
+			createTag();
+		}
+		function createHp(){
+			var table=document.createElement("table");
+			table.style.border="1px solid black";
+
+			for(var i=0;i<3;i++){
+				var tr=document.createElement("tr");
+				hpArray[i]=new Array();
+				for(var j=0;j<4;j++){
+					var td=document.createElement("td");
+					td.style.border="1px solid green";
+					td.style.width=35+"px";
+					td.style.height=30+"px";
+					td.style.background="green";
+					tr.appendChild(td);
+					hpArray[i][j]=td;
+				}
+				table.appendChild(tr);
+			}
+			hp.appendChild(table);
+		}
+		//게임이 시작되면 단어들이 등장, 점점 내려오게(top증가)
+		function gameStart(){
+			//span태그를 단어만큼 생성하여 stage에 부착
+			/*if(step==0){
+				createTag();
+			}*/
+			keyword.focus();
+			drop();
+		}
+		function createTag(){
+			for(var i=0;i<word.length;i++){
+				var r=parseInt(Math.random()*100)+50;
+				var span=document.createElement("span");
+				span.style.position="relative";
+				span.style.left=15+(i*60)+"px";
+				span.style.top=-r+"px";
+				span.innerText=word[i];
+				stage.appendChild(span);
+				wordArray[i]=span;
+			}
+		}
+		//텍스트 내려오는 효과주기
+		function drop(){
+			for(var i=0;i<wordArray.length;i++){
+				wordArray[i].style.top=parseInt(wordArray[i].style.top)+step+"px";
+			}
+			if(step>630){
+				clearTimeout(st);
+				for(var i=0;i<wordArray.length;i++){
+					stage.removeChild(wordArray[i]);
+				}
+				step=0;
+				damage();
+			}else{
+				var speed=document.getElementById("speed").value;
+				st=setTimeout("drop()",speed);
+			}
+		}
+		function pause(){
+			clearTimeout(st);
+		}
+		function enter(){
+			if(event.keyCode==13){
+				for(var i=0;i<wordArray.length;i++){
+					if(wordArray[i].innerText==keyword.value){
+						jumsu+=10;
+						score.value=jumsu;
+						//wordArray[i].innerText="";
+						wordArray[i].style.visibility="hidden";
+						//stage.removeChild(wordArray[i]);
+						hit++;
+					}
+				}
+				keyword.value="";
+			}
+		}
+		function damage(){
+			var cor=0;
+			for(var i=0;i<3;i++){
+				for(var j=0;j<4;j++){
+					if(cor<(10-hit)){
+						hpArray[i][j].style.background="";
+						cor++;
+					}
+				}
+			}
+		}
+	</script>
+</head>
+<body onLoad="init()">
+	<div id="wrapper">
+		<div id="stage"></div>
+		<div id="controller">
+			<div id="info">
+				<select id="speed">
+					<option value="1500">1단계</option>
+					<option value="1100">2단계</option>
+					<option value="700">3단계</option>
+					<option value="300">4단계</option>
+					<option value="100">5단계</option>
+				</select>
+				<input type="button" value="Start" onClick="gameStart()">
+				<input type="button" value="Pause" onClick="pause()">
+				<input type="text" value="0" readonly="readonly" size="5" id="score">점<p>
+				<input type="text" value="" size="10" id="keyword" onKeyUp="enter()">
+			</div>
+			<div id="hp">HP</div>
+		</div>
+	</div>
+</body>
+</html>

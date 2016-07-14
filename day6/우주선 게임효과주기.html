@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>우주선 게임효과주기</title>
+	<style>
+	body{
+		margin:0px;
+	}
+	#bg{
+		width:100%;
+		height:800px;
+		/*background:url("../images/bg.jpg") no-repeat;*/
+		/*background:url("../images/bg.jpg") repeat-x;*/
+		background:url("../images/bg.jpg");
+	}
+	#ship{
+		transform:rotate(90deg);
+		position:absolute;
+		left:0px;
+		top:300px;
+	}
+	#bullet{/*총알을 안보이게 X값을 음수로*/
+		/*transform:rotate(180deg);*/
+		position:absolute;
+		left:-70px;
+		top:300px;
+	}
+	</style>
+	<script>
+	var x=0;
+	var posX=0;
+	var posY=300;
+	var bX=0;
+	var bY=350;
+	function init(){
+		//배경을 x축방향으로 감소 
+		x-=1;
+		document.getElementById("bg").style.backgroundPosition=x+"px 0px";
+		setTimeout("init()",10);
+	}
+	//키보드의 방향키를 인식
+	function joyStick(){
+		var key=event.keyCode;
+//		alert(key);
+		var ship=document.getElementById("ship");
+		if(key==37){//좌측이동
+			if(posX>49){
+				posX-=50;
+			}
+		}else if(key==38){//위로이동
+			if(posY>49){
+				posY-=50;
+			}
+		}else if(key==39){//우측이동
+			if(posX<500){
+				posX+=50;
+			}
+		}else if(key==40){//아래이동
+			if(posY<650){
+				posY+=50;
+			}
+		}
+		if(key==32){//총알발사
+			bX=posX;
+			fire(posY+70);
+		}
+		ship.style.left=posX+"px";
+		ship.style.top=posY+"px";
+	}
+	function fire(sy){//총알날아가는 효과
+		bY=sy;
+		document.getElementById("bullet").style.top=bY+"px";
+		bX+=10;
+		document.getElementById("bullet").style.left=bX+"px";
+		if(bX<1200){
+			setTimeout("fire(bY)",1);
+		}
+	}
+	</script>
+</head>
+<body onLoad="init()" onKeyDown="joyStick()">
+<div id="bg">
+	<img src="../images/ship.png" width="100px" id="ship">
+	<img src="../images/bullet.png" width="40px" id="bullet">
+</div>
+</body>
+</html>

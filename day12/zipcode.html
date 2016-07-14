@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>우편번호 검색</title>
+	<script>
+	
+	//새창에서 선택한 현재의 우편번호 텍스트를 부모 윈도우의 우편번호 입력란에 채워넣는다+주소
+	function setPost(z,a){
+		var zip=z.split("-");
+		opener.document.form1.zipcode1.value=zip[0];
+		opener.document.form1.zipcode2.value=zip[1];
+		opener.document.form1.addr1.value=a;
+		opener.document.form1.addr2.focus();
+		window.close();
+	}
+
+	</script>
+</head>
+<body>
+<table width="100%" border="1px">
+<tr>
+	<td colspan="2" align="center">
+		<input type="text">
+		<img src="/images/search_button.png" width="20px">
+	</td>
+</tr>
+<tr>
+	<td>우편번호</td>
+	<td>주소</td>
+</tr>
+<tr onMouseOver="this.style.background='#9999ff'" onMouseOut="this.style.background=''">
+	<td><a href="javascript:setPost('123-422','경기도 안성')">123-422</a></td>
+	<td>경기도 안성</td>
+</tr>
+<tr onMouseOver="this.style.background='#9999ff'" onMouseOut="this.style.background=''">
+	<td><a href="javascript:setPost('433-129','서울시 강남')">433-129</a></td>
+	<td>서울시 강남</td>
+</tr>
+<tr onMouseOver="this.style.background='#9999ff'" onMouseOut="this.style.background=''">
+	<td><a href="javascript:setPost('723-762','강원도 동해')">723-762</a></td>
+	<td>강원도 동해</td>
+</tr>
+<tr onMouseOver="this.style.background='#9999ff'" onMouseOut="this.style.background=''">
+	<td><a href="javascript:setPost('546-443','제주도 제주')">546-443</a></td>
+	<td>제주도 제주</td>
+</tr>
+<tr onMouseOver="this.style.background='#9999ff'" onMouseOut="this.style.background=''">
+	<td><a href="javascript:setPost('273-387','충청남도 천안')">273-387</a></td>
+	<td>충청남도 천안</td>
+</tr>
+</table>
+</body>
+</html>

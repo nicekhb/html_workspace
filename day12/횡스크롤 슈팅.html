@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>횡스크롤 슈팅</title>
+	<style>
+	body{margin:0px;}
+	#stage{
+		background-image:url("../images/bg.jpg");
+	}
+	</style>
+	<script src="../lib/lib.js"></script>
+	<script src="../lib/Ship.js"></script>
+	<script src="../lib/Flame.js"></script>
+	<script src="../lib/Bullet.js"></script>
+	<script src="../lib/Unit.js"></script>
+	<script src="../lib/Warior.js"></script>
+	<script>
+	var stage;
+	var bgX=0;
+	var ship;
+	var flame;
+	var enemyArray=new Array();
+
+	window.addEventListener("load",function(){
+		init();
+	});
+
+	function init(){
+		stage=document.getElementById("stage");
+		stage.style.width=screen.width+"px";
+		stage.style.height=800+"px";
+
+		bgEffect();
+
+		ship=new Ship(stage,100,60,50,370);
+		ship.init();
+		flame=new Flame(stage,60,30,ship.x-55,ship.y+15);
+		flame.init();
+
+		for(var i=0;i<20;i++){
+			var xx=parseInt(i/10);
+			var yy=i%10;
+			var unit=new Unit(stage,30,30,1000+(40*xx),150+(50*yy),"../images/galaxy/enemy1.png");
+			
+			unit.init();
+			enemyArray.push(unit);
+		}
+		/*
+		var warior=new Warior(stage,320,400,1000,150);
+		warior.init();
+		warior.velX=-5;
+		*/
+	}
+
+	//상하좌우,총알 이벤트처리
+	window.addEventListener("keydown",function(){
+		var key=event.keyCode;
+		switch(key){
+			case 32:fire();break;
+			case 37:ship.velX=-2;flame.velX=-2;break;
+			case 38:ship.velY=-2;flame.velY=-2;break;
+			case 39:ship.velX=2;flame.velX=2;break;
+			case 40:ship.velY=2;flame.velY=2;break;
+		}
+	});
+	window.addEventListener("keyup",function(){
+		var key=event.keyCode;
+		if(key==37||key==39){
+			ship.velX=0;
+			flame.velX=0;
+		}
+		if(key==38||key==40){
+			ship.velY=0;
+			flame.velY=0;
+		}
+	});
+
+	function fire(){
+		var bullet=new Bullet(stage,30,20,ship.x+80,ship.y+20);
+		bullet.init();
+	}
+
+	//배경 흐름 처리
+	function bgEffect(){
+		bgX-=1;
+		stage.style.backgroundPosition=bgX+"px 0px";
+		setTimeout("bgEffect()", 10);
+	}
+	</script>
+</head>
+<body>
+<div id="stage"></div>
+</body>
+</html>

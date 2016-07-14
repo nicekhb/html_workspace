@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>록맨</title>
+	<script src="../lib/lib.js"></script>
+	<script src="../lib/Rockman.js"></script>
+	<script src="../lib/Block.js"></script>
+	<script src="../lib/Bullet.js"></script>
+	<script src="../lib/Unit.js"></script>
+	<script src="../lib/Warior.js"></script>
+	<script>
+	var stage;
+	var rockman;
+	var blockArr=new Array();
+	var step=0;
+	var bgX=0;
+	var enemyArray=new Array();
+	var actionArray=["../images/action/run0.png","../images/action/run1.png","../images/action/run2.png"];
+	var actionCount=0;
+
+	window.addEventListener("load",function(){
+		init();
+	});
+	function init(){
+		document.body.style.margin="0px";
+		stage=document.getElementById("stage");
+		stage.style.width=screen.width+"px";
+		stage.style.height=447+"px";
+		stage.style.backgroundImage="url('../images/back.png')";
+
+		for(var i=0;i<30;i++){
+			var block = new Block(stage,33,33,100+(i*33),370,"../images/block.png");
+			block.init();
+			blockArr.push(block);
+		}
+
+		gameStart();
+		bgEffect();
+		createEnemy();
+
+		stage.addEventListener("click",function(){
+			var posX=event.clientX;
+			var posY=event.clientY;
+			var block = new Block(stage,33,33,posX,posY,"../images/block.png");
+			block.init();
+			blockArr.push(block);
+		});
+	}
+
+	function gameStart(){
+		//var rockman = new Rockman(stage,30,31,50,50,"../images/MegaManPlayer.png");
+		rockman = new Rockman(stage,60,62,150,10,"../images/rockman.png");
+		rockman.init();
+	}
+	function createEnemy(){
+		var enemyImg=[
+			"../images/enemy/e1.png",
+			"../images/enemy/e2.png",
+			"../images/enemy/e3.png",
+			"../images/enemy/e4.png"
+		];
+		for(var i=0;i<8;i++){
+			var r=getRandomByRange(3,0);
+			var unit=new Unit(stage,50,50,700+(i*50),300,enemyImg[r]);
+			unit.init();
+			unit.velX=-2;
+			enemyArray.push(unit);
+		}
+		//var warior=new Warior(stage,120,120,1000,280);
+		//warior.init();
+		//warior.velX=-5;
+		//enemyArray.push(warior);
+		//setTimeout("createEnemy()",2000);
+	}
+
+	window.addEventListener("keydown",function(){
+		var key=event.keyCode;
+		switch(key){
+			case 32:fire();break;
+			case 37:go(-2);break;
+			case 38:jump();	break;
+			case 39:go(2);break;
+			//case 40:rockman.velY=2;break;
+		}
+	});
+	window.addEventListener("keyup",function(){
+		var key=event.keyCode;
+		if(key==37||key==39){
+			rockman.velX=0;
+			step=0;
+			rockman.running=false;
+		}
+	});
+
+	function jump(){
+		if(!rockman.jumping&&!rockman.falling){
+			rockman.velY=-6;
+			rockman.action("../images/rockman.png");
+		}
+		rockman.jumping=true;
+	}
+	function fire(){
+		rockman.action("../images/rockman.png");
+		var bullet=new Bullet(stage,30,20,rockman.x+15,rockman.y+15);
+		bullet.init();
+	}
+	function go(s){
+		step=s;
+		//움직임 처리
+		rockman.velX=step;
+		//액션처리
+		//rockman.action(actionArray[parseInt(actionCount)]);
+		//actionCount+=0.2;
+		//f(parseInt(actionCount)==actionArray.length){
+		///	actionCount=0;
+		//}
+		rockman.running=true;
+	}
+	function bgEffect(){
+		bgX-=step;
+		//카메라 효과
+		stage.style.backgroundPosition=bgX+"px 0px";
+		setTimeout("bgEffect()",20);
+	}
+	</script>
+</head>
+<body>
+<div id="stage"></div>
+</body>
+</html>

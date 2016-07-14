@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script>
+	//버튼을 누르면, 카운터값을 1씩 증가, 텍스트입력 상자에 뿌리자
+	var x=0;
+	function count(){
+		x++;
+		document.getElementById("txt").value=x;
+	}
+	</script>
+</head>
+<body>
+	<input id="txt" type="text" value="0">
+	<input type="button" value="카운터 증가" onClick="count()">
+</body>
+</html>

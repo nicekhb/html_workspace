@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>String 내장객체</title>
+	<script>
+	/*
+	자바스크립트 자체적으로 이미 내장된 객체가 몇개 있는데
+	그 중 String 객체를 학습한다.
+	주의) 모든 객체가 생성시 new를 요구하는 것은 아니다
+		명시적(explicit), 암시적(implicit)
+	*/
+	var a="대한민국"; //암시적, 묵시적 생성법
+	var str="지난... 여름에 찍은 사진.jpg";
+	var b="test.png";
+	var c="    king";
+	//문자열의 길이를 출력하시오
+	document.write("문자열의 길이는 "+a.length+"<br>");
+
+	document.write("index 1번의 문자값은 "+a.charAt(1)+"<br>");
+
+	//charAt을 이용하여 모든 문자를 출력하시오
+	for(var i=0;i<a.length;i++){
+		//document.write("index "+(i+1)+"번의 문자값은 "+a.charAt(i)+"<br>");
+		document.write(a.charAt(i));
+	}
+	document.write("<br>");
+
+	//원하는 문자의 index를 추출하시오
+	document.writeln(a.indexOf("국"));
+
+	document.writeln(a.lastIndexOf("국"));
+
+	document.writeln(a.replace("대","무지큰"));
+
+	document.writeln(str.substring(6,8));
+
+	document.writeln(str.substring(str.lastIndexOf(".")+1,str.length));
+
+	document.writeln(str.big());
+
+	document.write("<br>");
+
+	var arr=b.split(".");
+	document.writeln(arr);
+	document.writeln("<br>"+arr[0]+"<br>"+arr[1]+"<br>");
+
+	document.write(b.toUpperCase()+"<br>");
+
+	//대부분의 객체지향언어에서는 일단 한번 메모리에 올라온 스트링 객체는
+	//변경이 불가능하다(immutable)
+	document.write("길이 "+c.length+"<br>");
+	var nc=c.trim();
+	document.write("길이 "+nc.length+"<br>");
+
+	</script>
+</head>
+<body>
+
+</body>
+</html>

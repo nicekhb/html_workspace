@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>과일명 출력하기</title>
+	<script>
+	//메모리에 과일명을 10개를 올려서, 모두 출력하시오.
+	//메모리에 데이터를 올리는 방법은 반드시 변수명에 의한 방법만 있는게 아니다
+	//변수명에 의해서 메모리에 올리면, 반드시 이름으로 데이터를 접근해야 하므로,
+	//대량의 데이터 처리시 효율성이 떨어진다.
+	// 해결책? 개성있는 이름이 아닌 순서로 데이터를 제어하자
+	var fruits= new Array(); //메모리에 10개의 연속되며, 순서있는 공간을 확보
+	fruits[0]="딸기";
+	fruits[1]="사과";
+	fruits[2]="바나나";
+	fruits[3]="파인애플";
+	fruits[4]="키위";
+	fruits[5]="수박";
+	fruits[6]="자몽";
+	fruits[7]="복숭아";
+	fruits[8]="배";
+	fruits[9]="포도";
+
+	alert("배열의 크기는 "+fruits.length);
+
+	for(var i=0;i<fruits.length;i++){
+		document.write(fruits[i]+"<br>");
+	}
+	</script>
+</head>
+<body>
+
+</body>
+</html>

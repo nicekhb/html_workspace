@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>자바스크립트 배열</title>
+	<script>
+	var f1=new Array();
+	f1[0]="오렌지";
+	f1[1]="딸기";
+	f1[2]="체리";
+	f1[3]="망고";
+
+	delete f1[2];
+
+	for(var i=0;i<f1.length;i++){
+		if(f1[i]==undefined){
+			document.write("삭제<br>");
+		}else{
+			document.write(f1[i]+"<br>");
+		}
+	}
+
+	</script>
+</head>
+<body>
+
+</body>
+</html>

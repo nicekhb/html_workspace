@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>불꽃효과</title>
+	<style>
+	#stage{
+		width:100%
+		height:800px;
+	}
+	</style>
+	<script src="../lib/Flame.js"></script>
+	<script>
+	var stage;
+
+	window.addEventListener("load",function(){
+		stage=document.getElementById("stage");
+		//
+		var flame=new Flame(stage,80,40,0,0);
+		flame.init();
+	});
+
+	</script>
+</head>
+<body>
+<div id="stage"></div>
+</body>
+</html>

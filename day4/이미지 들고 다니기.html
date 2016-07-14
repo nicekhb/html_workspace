@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>이미지 들고 다니기</title>
+	<script>
+	function init(){
+		document.getElementById("txt").value="딸기";
+	}
+	</script>
+</head>
+<body onLoad="init();">
+<!--
+<img src="../images/kitty.jpg" onDblClick="alert('더블클릭햇어');" onMouseOut="alert('벗어낫어');" onMouseOver="alert('올렷어');">
+<input type="text" onBlur="alert('커서벗어낫어');" onFocus="alert('커서올렷어');">
+-->
+<input type="text" id="txt" onChange="alert('변경했어');">
+
+<select onChange="alert('바껏어');">
+	<option>네이버</option>
+	<option>구글</option>
+	<option>다음</option>
+</select>
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>메모리 데이터베이스</title>
+	<style>
+		#wrapper{
+			width:650px;
+			height:600px;
+			margin:auto;
+		}
+		#leftSide{
+			width:150px;
+			height:600px;
+			float:left;
+			background:pink;
+		}
+		#rightSide{
+			width:500px;
+			height:600px;
+			float:left;
+			background:yellow;
+		}
+	</style>
+	<script>
+	var bt;
+	var m_id;
+	var pw;
+	var rightSide;
+	var table;
+	var memberList=new Array();
+	//var count=0;
+
+	window.addEventListener("load",function(){
+		init();
+	});
+
+	function init(){
+		bt=document.getElementById("bt");
+		m_id=document.getElementById("m_id");
+		pw=document.getElementById("pw");
+		rightSide=document.getElementById("rightSide");
+
+		getTitle();
+
+		bt.addEventListener("click",function(){
+			if(m_id.value.length==0){
+				alert("id를 입력하세요");
+				m_id.focus();
+				return;
+			}else if(!pw.value){
+				alert("pw를 입력하세요");
+				pw.focus();
+				return;
+			}
+			//
+			var member=[m_id.value, pw.value];
+			//memberList[count++]=member;
+			memberList.push(member);
+			//
+			initTable();
+			getList();
+			//document.getElementById("rightSide").innerText=memberList.length+"번째 가입자 입니다";
+		});
+	}
+
+	function initTable(){
+		//table.removeChild();
+		table.innerHTML="";
+		getTitle();
+	}
+
+	function getList(){
+		///
+		for(var i=memberList.length-1;i>=0;i--){
+			var tr=document.createElement("tr");
+			var ntd=document.createElement("td");
+			ntd.innerText=i+1;
+			tr.appendChild(ntd);
+			for(var j=0;j<memberList[i].length;j++){
+				var td=document.createElement("td");
+				td.innerText=memberList[i][j];
+				tr.appendChild(td);
+			}
+			table.appendChild(tr);
+		}
+
+		//
+	}
+
+	function getTitle(){
+		table=document.createElement("table");
+		table.style.width=450+"px";
+		table.style.border="1px";
+
+		var title=document.createElement("tr");
+
+		var no_td=document.createElement("td"); //no용
+		no_td.innerText="번호";
+		var id_td=document.createElement("td"); //id용
+		id_td.innerText="ID";
+		var pw_td=document.createElement("td"); //pw용
+		pw_td.innerText="패스워드";
+
+		title.appendChild(no_td);
+		title.appendChild(id_td);
+		title.appendChild(pw_td);
+
+		table.appendChild(title);
+
+		rightSide.appendChild(table);
+	}
+
+	</script>
+</head>
+<body>
+<div id="wrapper">
+	<div id="leftSide">
+		ID:<input type="text" size="7" maxlength="12" id="m_id"><br>
+		PW:<input type="password" size="7" maxlength="8" id="pw"><br>
+		<input type="button" value="등록" id="bt">
+	</div>
+	<div id="rightSide"></div>
+</div>
+</body>
+</html>

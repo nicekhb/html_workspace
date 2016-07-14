@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>자동 겔러리</title>
+	<style>
+	#wrapper{
+		width:600px;
+		height:650px;
+		/*background:yellow;*/
+		margin:auto;
+	}
+	#controller{
+		width:100%;
+		height:50px;
+		background:#33cc99;
+		text-align:center;
+	}
+	/*한칸 띄우면 안쪽의 하위 요소를 의미*/
+	#controller img{
+		width:50px;
+	}
+/*	#bt_prev{
+		transform:rotate(180deg);
+	}
+*/
+	</style>
+	<script>
+		var n=1;
+		function next(){
+			n++;
+			n=(n%11==0)?1:n;
+			console.log("현재 n은 "+n);
+			document.getElementById("big").src="../images/"+n+".jpg";
+		}
+		function prev(){
+			n--;
+			n=(n==0)?10:n;
+			console.log("현재 n은 "+n);
+			document.getElementById("big").src="../images/"+n+".jpg";
+		}
+		function auto(){
+			//자동 호출
+			setInterval("next()",1000);
+		}
+	</script>
+</head>
+<body>
+<div id="wrapper">
+	<img src="../images/1.jpg" width="100%" id="big">
+	<div id="controller">
+		<img src="../images/left.png" id="bt_prev" onClick="prev();">
+		<img src="../images/play.png" id="bt_auto" onClick="auto();">
+		<img src="../images/right.png" id="bt_next" onClick="next();">
+	</div>
+</div>
+</body>
+</html>

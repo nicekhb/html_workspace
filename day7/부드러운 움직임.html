@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>부드러운 움직임</title>
+	<style>
+		#wrapper{
+			width:1200px;
+			height:800px;
+			background:#ccffff;
+		}
+		#kitty{
+			position:absolute;
+			left:0px;
+			top:200px;
+		}
+	</style>
+	<script>
+		var kitty;
+		var targetX;//피카츄가 도달할 목표지점
+		var targetY;
+		var a=0.95;
+		var st;
+		function init(){
+			kitty=document.getElementById("kitty");
+
+		}
+		function act(){
+			targetX=event.clientX;
+			targetY=event.clientY;
+			clearTimeout(st);
+			move();
+		}
+		function move(){
+			//목표지점-비율계수*(목표지점-나의위치)
+//			alert(parseInt(kitty.style.left));
+	
+			kitty.style.left=(targetX-a*(targetX-parseInt(kitty.style.left)))+"px";
+			kitty.style.top=(targetY-a*(targetY-parseInt(kitty.style.top)))+"px";
+			st=setTimeout("move()",10);
+		}
+	</script>
+</head>
+<body onLoad="init()">
+	<div id="wrapper" onMouseMove="act()">
+		<img src="../images/kitty2.png" id="kitty" width="100px" style="position:absolute;left:0px;top:200px;">
+	</div>
+</body>
+</html>

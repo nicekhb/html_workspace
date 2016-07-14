@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>좌표따라 움직이기</title>
+	<style>
+		/*html태그중에 같은 라인에는 절대로 다른 태그가 존재할 수 없도록
+			배척하는 특징을 갖는 태그가 여러개 있다 이러한 것을 block이라 한다*/
+		#wrapper{
+			width:1000px;
+			height:700px;
+			margin:auto;
+		}
+		#stage{
+			width:800px;
+			height:700px;
+			background:yellow;
+			/*border:1px solid red;*/
+			float:left;
+		}
+		#info{
+			width:200px;
+			height:700px;
+			background:#ccffff;
+			float:left;
+		}
+		#pos{
+			width:100%;
+			height:680px;
+			background:pink;
+			overflow:scroll;
+		}
+	</style>
+	<script>
+		var stage;
+		var pos;
+		var data=new Array();//좌표정보
+		var count=0;
+		var img;
+		var step=0;
+		var st; //setTimeout
+
+		function init(){
+			stage=document.getElementById("stage");
+			pos=document.getElementById("pos");
+			//
+			img=document.createElement("img");
+			img.src="../images/mario2.png";
+			img.style.width=30+"px";
+			img.style.position="absolute";
+			stage.appendChild(img);
+		}
+		function stamp(){
+			var span=document.createElement("span");
+			span.innerText="●";
+			span.style.position="absolute";
+			span.style.left=(event.clientX-5)+"px";
+			span.style.top=(event.clientY-10)+"px";
+			span.style.fontSize=1+"px";
+			stage.appendChild(span);
+
+			var point=[event.clientX-3, event.clientY-5];
+			data[count++]=point;
+
+			console.log("현재까지 저장된 점의 개수: "+data.length);
+
+			pos.innerHTML+="[X="+point[0]+", Y="+point[1]+" ]<br>";
+		}
+		function start(){
+			if(step<data.length){
+			img.style.left=data[step][0]+"px";
+			img.style.top=data[step][1]+"px";
+			step++;
+			}
+
+			st=setTimeout("start()",100);
+		}
+		function erase(){
+			clearTimeout(st);
+			stage.innerText="";
+			pos.innerText="";
+		}
+	</script>
+</head>
+<body onLoad="init()">
+	<div id="wrapper">
+		<div id="stage" onMouseDown="stamp()"></div>
+		<div id="info">
+			<input type="button" value="Start" onClick="start()">
+			<input type="button" value="Clear" onClick="erase()">
+			<div id="pos"></div>
+		</div>
+	</div>
+</body>
+</html>

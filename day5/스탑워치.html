@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>스탑워치</title>
+	<style>
+		#txt{
+			width:200px;
+			height:100px;
+			font-size:40pt;
+			font-weight:bold;
+			color:red;
+			background:yellow;
+			text-align:right;
+		}
+	</style>
+	<script>
+		var ss=0;
+		var st;
+		function init(){
+			document.getElementById("txt").value=0;
+		}
+		function start(){
+			ss++;
+			document.getElementById("txt").value=ss;
+			st=setTimeout("start()",10);
+		}
+		function stop(){
+			clearTimeout(st);
+		}
+	</script>
+</head>
+<body onLoad="init();">
+	<input type="text" id="txt"">
+	<input type="button" value="시작" onClick="start()">
+	<input type="button" value="정지" onClick="stop()">
+</body>
+</html>

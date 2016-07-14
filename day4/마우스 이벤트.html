@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>마우스 이벤트</title>
+	<style>
+	/* div란? division 이라는 의미의 태그, 화면을 분할하는 역할
+		주로 웹사이트의 레이아웃에 사용된다. 기본적으로 투명*/
+	div{
+		width:100%;
+		height:850px;
+		background:yellow;
+	}
+	#kitty{
+		position:absolute;
+		left:100px;
+		top:100px
+	}
+	</style>
+	<script>
+	var flag = false;
+	function getInfo(){
+		console.log("x좌표"+event.clientX+", y좌표:"+event.clientY);
+		document.getElementById("tx").value=event.clientX;
+		document.getElementById("ty").value=event.clientY;
+		//키티의 좌표값(left,top)을 마우스의 좌료와 일치
+		if(flag){
+			document.getElementById("kitty").style.border="3px solid red";
+			document.getElementById("kitty").style.left=(event.clientX-50)+"px";
+			document.getElementById("kitty").style.top=(event.clientY-50)+"px";
+		}else{
+			document.getElementById("kitty").style.border="0px"; //보더없애기
+		}
+	}
+	function setFlag(){
+		console.log("click");
+		flag = !flag;
+	}
+	</script>
+</head>
+<body onMouseMove="getInfo();">
+X좌표 : <input type="text" id="tx">
+Y좌표 : <input type="text" id="ty">
+<div><img src="../images/kitty.jpg" width="100px" id="kitty" onClick="setFlag();"></div>
+
+</body>
+</html>

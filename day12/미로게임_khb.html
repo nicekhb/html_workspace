@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>미로게임</title>
+	<style>
+	body{
+		margin:0px;
+		}
+	#stage{
+		background:#c0c0c0;
+	}
+	</style>
+	<script src="../lib/Hero.js"></script>
+	<script src="../lib/Maze.js"></script>
+	<script>
+	var stage;
+	var kitty;
+	var kittyX=5;
+	var kittyY=5;
+	var size;
+	var wSize;
+	var hSize;
+	var block;
+
+	window.addEventListener("load",function(){
+		init();
+	});
+
+	function init(){
+		stage=document.getElementById("stage");
+		stage.style.width=screen.width+"px";
+		stage.style.height=800+"px";
+		//stage.style.backgroundImage="url('../images/타자배경.jpg')";
+		
+		size=40;
+		wSize=parseInt(screen.width/size);
+		hSize=parseInt(800/size);
+		block=new Array(hSize);
+		for(var a=0;a<hSize;a++){
+			block[a]=new Array(wSize);
+			for(var i=0;i<wSize;i++){
+				var maze=new Maze(stage,size,size,size*i,size*a);
+				maze.init();
+				block[a][i]=maze;
+			}
+		}
+
+		kitty=new Hero(stage,size-2,size-2,size*kittyX+2,size*kittyY+2,"../images/kitty2.png");
+		kitty.init();
+
+	}
+
+	window.addEventListener("keydown",function(){
+		var key=event.keyCode;
+		
+		switch(key){
+			case 37:
+				if(kittyX>0){
+					if((block[kittyY][kittyX-1].flag)==false){
+						kitty.x-=size;
+						kittyX--;
+					}
+				}
+				break;
+			case 38:
+				if(kittyY>0){
+					if((block[kittyY-1][kittyX].flag)==false){
+						kitty.y-=size;
+						kittyY--;
+					}
+				}
+				break;
+			case 39:
+				if(kittyX<wSize-1){
+					if((block[kittyY][kittyX+1].flag)==false){
+						kitty.x+=size;
+						kittyX++;
+					}
+				}
+				break;
+			case 40:
+				if(kittyY<hSize-1){
+					if((block[kittyY+1][kittyX].flag)==false){
+						kitty.y+=size;
+						kittyY++;
+					}
+				}
+				break;
+		}
+	});
+
+
+	</script>
+</head>
+<body>
+<div id="stage"></div>
+</body>
+</html>

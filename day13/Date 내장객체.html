@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Date 내장객체</title>
+	<script>
+	//현재시간
+	var d=new Date();
+	document.write(d);
+
+	//년도
+	document.write("<br>");
+	document.write(d.getFullYear());
+
+	//월
+	document.write("<br>");
+	document.write(d.getMonth()+1);
+
+	//일
+	document.write("<br>");
+	document.write(d.getDate());
+	document.write("<br>");
+
+	//임의의 날짜에 대해서 원하는 정보 추출하기
+	var d2 = new Date("2018-7-16");
+	document.write(d2.getDay());
+
+	</script>
+</head>
+<body>
+
+</body>
+</html>

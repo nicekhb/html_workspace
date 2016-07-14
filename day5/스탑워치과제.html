@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>스탑워치과제</title>
+	<style>
+		#sec{
+			width:100px;
+			height:60px;
+			font-size:40pt;
+			font-weight:bold;
+			color:red;
+			background:yellow;
+			text-align:right;
+		}
+		#min{
+			width:100px;
+			height:60px;
+			font-size:40pt;
+			font-weight:bold;
+			color:red;
+			background:yellow;
+			text-align:right;
+		}
+		#hour{
+			width:100px;
+			height:60px;
+			font-size:40pt;
+			font-weight:bold;
+			color:red;
+			background:yellow;
+			text-align:right;
+		}
+	</style>
+	<script>
+		var ss=0;
+		var st;
+		function init(){
+			document.getElementById("sec").value=0;
+		}
+		function start(){
+			var h,m,s;
+			ss++;
+			
+			h=ss/3600;
+			h=parseInt(h);
+			m=(ss%3600)/60;
+			m=parseInt(m);
+			s=ss%60;
+
+			document.getElementById("h1").src="number/"+(parseInt(h/10)%10)+".png";
+			document.getElementById("h2").src="number/"+(h%10)+".png";
+			document.getElementById("m1").src="number/"+(parseInt(m/10)%10)+".png";
+			document.getElementById("m2").src="number/"+(m%10)+".png";
+			document.getElementById("s1").src="number/"+(parseInt(s/10)%10)+".png";
+			document.getElementById("s2").src="number/"+(s%10)+".png";
+
+			
+/*
+			document.getElementById("hour").value=parseInt(h);
+			document.getElementById("min").value=parseInt(m);
+			document.getElementById("sec").value=s;
+			*/
+			st=setTimeout("start()",10);
+			document.getElementById("bt_start").disabled=true;
+		}
+		function stop(){
+			clearTimeout(st);
+			document.getElementById("bt_start").disabled=false;
+		}
+	</script>
+</head>
+<body onLoad="init();">
+	<img src="number/0.png" id="h1">
+	<img src="number/0.png" id="h2">시간
+	<img src="number/0.png" id="m1">
+	<img src="number/0.png" id="m2">분
+	<img src="number/0.png" id="s1">
+	<img src="number/0.png" id="s2"><br>
+	<input type="button" id="bt_start" value="시작" onClick="start()">
+	<input type="button" id="bt-stop" value="정지" onClick="stop()">
+</body>
+</html>

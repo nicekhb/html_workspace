@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>갤러그</title>
+	<style>
+		body{
+			margin:0px;
+		}
+		#stage{
+			width:1000px;
+			height:800px;
+			background-Image:url("../images/galaxy/bg.png");
+		}
+	</style>
+	<script src="../lib/lib.js"></script>
+	<script src="../lib/Hero.js"></script>
+	<script src="../lib/Enemy.js"></script>
+	<script src="../lib/Bullet2.js"></script>
+	<script>
+	var stage;
+	var bgY=0;
+	var hero;
+	var allArray=new Array();
+	var kingArray=new Array();
+	var enemyArray=new Array();
+
+	allArray[0]=kingArray;
+	allArray[1]=enemyArray;
+
+	var enemyImg=["../images/galaxy/blue_king.png",
+							"../images/galaxy/green_king.png",
+							"../images/galaxy/enemy1.png",
+							"../images/galaxy/enemy2.png"];
+
+	window.addEventListener("load",function(){
+		stage=document.getElementById("stage");
+		bgEffect();
+
+		//주인공 등장
+		hero=new Hero(stage,50,50,475,730);
+		hero.init();
+
+		//적군 등장
+		for(var i=0;i<10;i++){
+			if(i<5){
+				var king=new Enemy(stage,55,55,110+(80*i),70,enemyImg[0]);
+			}else{
+				var king=new Enemy(stage,55,55,110+(80*i),70,enemyImg[1]);
+			}
+			king.init();
+			kingArray.push(king);
+		}
+		//console.log("왕의 수=",kingArray.length);
+		for(var i=0;i<120;i++){
+			var xx=i%20;
+			var yy=parseInt(i/20);
+			if(i<60){
+				var enemy=new Enemy(stage,30,30,100+(40*xx),150+(50*yy),enemyImg[2]);
+			}else{
+				var enemy=new Enemy(stage,30,30,100+(40*xx),150+(50*yy),enemyImg[3]);
+			}
+			enemy.init();
+			enemyArray.push(enemy);
+		}
+		//console.log("쫄의 수=",enemyArray.length);
+	});
+
+	//키보드 입력처리
+	window.addEventListener("keydown",function(){
+		var key=event.keyCode;
+
+		switch(key){
+			case 37:hero.velX=-2;break;
+			case 39:hero.velX=2;break;
+			case 32:fire();break;
+		}
+
+	});
+
+	window.addEventListener("keyup",function(){
+		if(event.keyCode==37 || event.keyCode==39){
+			hero.velX=0;
+		}
+	});
+
+
+	//배경 이미지 흘러가기 효과
+	function bgEffect(){
+		bgY+=2;
+		stage.style.backgroundPosition="0px "+bgY+"px";
+		setTimeout("bgEffect()",10);
+	}
+
+	//총알 발사 
+	function fire(){
+		//스페이스바 누를떄마다 총알 인스턴스 생성
+		var bullet=new Bullet2(stage,10,20,hero.x+(hero.width/2-5),hero.y-10);
+		bullet.init();
+	}
+
+	//파리배열테스트
+	var testCount=0;
+	function test(){
+		stage.removeChild(enemyArray[testCount].img);
+		testCount++;
+	}
+	</script>
+</head>
+<body>
+<div id="stage"></div>
+</body>
+</html>

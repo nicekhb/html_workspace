@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>단어게임</title>
+	<style>
+	#wrapper{
+		width:400px;
+		height:500px;
+		border:2px solid red;
+		margin:auto;
+	}
+	#wordView{
+		width:100%;
+		height:120px;
+		background:#99ffcc;
+		font-size:50pt;
+		text-align:center;
+	}
+	#word_input{
+		width:99%;
+		height:90px;
+		background:yellow;
+		font-size:40pt;
+	}
+	#feedback{
+		width:100%;
+		height:200px;
+		font-size:120pt;
+		text-align:center;
+		color:red;
+		font-weight:bold;
+	}
+	#score{
+		width:100%;
+		height:70px;
+		font-size:50pt;
+		text-align:center;
+	}
+	</style>
+	<script>
+	var word=new Array();
+	var count=0;
+	var jumsu=0;
+
+	word[0]="광화문";
+	word[1]="컴퓨터";
+	word[2]="스마트폰";
+	word[3]="이어폰";
+	word[4]="티비";
+	word[5]="볼펜";
+	word[6]="바다";
+	word[7]="하늘";
+	word[8]="바나나";
+	word[9]="책상";
+	function init(){
+		//
+		var wordView=document.getElementById("wordView");
+		wordView.innerText=word[count];
+		//
+		var word_input=document.getElementById("word_input");
+		word_input.focus();
+	}
+	function enter(){
+		var key=event.keyCode;
+		//alert("당신이 입력한 키보드의 아스키값 = "+key);
+		if(key==13){
+			var word_input=document.getElementById("word_input");
+			var feedback=document.getElementById("feedback");
+			var wordView=document.getElementById("wordView");
+			var score=document.getElementById("score");
+			//
+			if(word_input.value==word[count]){
+				feedback.innerText="O";
+				//
+				jumsu+=10;
+				score.innerText=jumsu+" 점";
+			}else{                                 
+				feedback.innerText="X";
+			}
+			//
+			count++;
+			if(count<word.length){
+				wordView.innerText=word[count];
+			}else{
+				alert("게임 종료");
+			}
+			//
+			word_input.value="";
+		}
+	}
+	</script>
+</head>
+<body onLoad="init()">
+	<div id="wrapper">
+		<div id="wordView"></div>
+		<input type="text" id="word_input" onKeyUp="enter()">
+		<div id="feedback"></div>
+		<div id="score">0 점</div>
+	</div>
+</body>
+</html>

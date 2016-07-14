@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>왔다리 갔다리</title>
+	<style>
+		#pic{
+			position:absolute;
+			left:0px;
+			top:200px;
+		}
+	</style>
+	<script>
+		var x=0;
+		var goRight = true;
+		//이미지의 위치가 500 위치에 도달하면 다시 돌아오되,
+		//0에 도달하면 다시 반대로 증가
+		function move(){
+			if(goRight){
+				x+=10;
+				console.log(x);
+				document.getElementById("pic").style.left=x+"px";
+				if(x>=500){
+					goRight=false;					
+				}
+			}else{
+				x-=10;
+				console.log(x);
+				document.getElementById("pic").style.left=x+"px";
+				if(x<=0){
+					goRight=true;					
+				}
+			}
+		}
+	</script>
+</head>
+<body>
+	<input type="button" value="움직이기" onClick="move()">
+	<br>
+	<img src="../images/kitty.jpg" id="pic">
+</body>
+</html>

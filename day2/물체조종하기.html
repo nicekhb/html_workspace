@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+	/*cascading style sheet  : css*/
+	/*html문서의 한계 극복 */
+	#pic{
+		position:absolute; /*절대위치*/
+		left:300px;
+		top:200px;
+		transform:rotate(0deg);
+	}
+	</style>
+	<script>
+	var x=300;
+	var y=200;
+	var d=0;
+	var s=1;
+	function moveRight(){
+		x+=10;
+		document.getElementById("pic").style.left=x+"px";
+	}
+	function moveLeft(){
+		x-=10;
+		document.getElementById("pic").style.left=x+"px";
+	}
+	function moveUp(){
+		y-=10;
+		document.getElementById("pic").style.top=y+"px";
+	}
+	function moveDown(){
+		y+=10;
+		document.getElementById("pic").style.top=y+"px";
+	}
+	function rotateRight(){
+		d+=10;
+		document.getElementById("pic").style.transform="rotate("+d+"deg)";
+	}
+	function rotateLeft(){
+		d-=10;
+		document.getElementById("pic").style.transform="rotate("+d+"deg)";
+	}
+	function upScale(){
+		s+=0.1;
+		document.getElementById("pic").style.transform="scale("+s+","+s+")";
+	}
+	function downScale(){
+		s-=0.1;
+		document.getElementById("pic").style.transform="scale("+s+","+s+")";
+	}
+	</script>
+</head>
+<body>
+	&nbsp;&nbsp;<input type="button" value="△" onClick="moveUp()"><br>
+	<input type="button" value="<" onClick="moveLeft()">
+	<input type="button" value=">" onClick="moveRight()">
+	<input type="button" value="시계방향" onClick="rotateRight()">
+	<input type="button" value="반시계방향" onClick="rotateLeft()"><br>
+	&nbsp;&nbsp;<input type="button" value="▽" onClick="moveDown()"><br>
+	<input type="button" value="크기증가" onClick="upScale()">
+	<input type="button" value="크기감소" onClick="downScale()">
+	<img src="../images/kitty.jpg" id="pic">
+</body>
+</html>
+ 

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>스위치onoff</title>
+	<script>
+		var bg;
+		var flag=false;
+		function switchOn(){
+			document.body.style.background="yellow";
+		}
+		function switchOff(){
+			document.body.style.background="black";
+		}
+		function toggle(){
+			//document.body.style.background=(document.body.style.background=="black")?"yellow":"black";
+			flag=!flag;
+			bg=(flag)?"black":"yellow";
+			document.body.style.background=bg;
+		}
+	</script>
+	<style>/*누구를  어떻게 할지에 대한 문법으로 구성됨*/
+		 input{
+			width:200px;
+			height:60px;
+			background:#ccffcc;
+			font-size:20pt;
+			color:#ffcc99;
+			font-weight:bold;
+		 }
+		 body{
+			background:yellow;
+		 }
+	</style>
+</head>
+<body>
+	<input type="button" value="ON" onClick="switchOn()">
+	<input type="button" value="OFF" onClick="switchOff()">
+	<input type="button" value="원터치" onClick="toggle()">
+</body>
+</html>

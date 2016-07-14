@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>배열이용 갤러리</title>
+	<style>
+	#wrapper{
+		width:400px;
+		height:400px;
+		/*background:yellow;*/
+		margin:auto;
+	}
+	#controller{
+		width:100%;
+		height:50px;
+		background:#33cc99;
+		text-align:center;
+	}
+	/*한칸 띄우면 안쪽의 하위 요소를 의미*/
+	#controller img{
+		width:50px;
+	}
+	</style>
+	<script>
+	var photo = new Array();
+	var count=0;
+	photo[0] = "유정1.jpg";
+	photo[1] = "유정2.jpg";
+	photo[2] = "유정3.jpg";
+	photo[3] = "유정4.jpg";
+	photo[4] = "유정5.jpg";
+
+	function init(){
+		document.getElementById("big").src="../images/"+photo[count];
+	}
+	function next(){
+		count++;
+		if(count==photo.length){
+			alert("마지막 사진입니다.");
+			count--;
+		}else{
+			document.getElementById("big").src="../images/"+photo[count];
+		}
+	}
+	function prev(){
+		count--;
+		if(count<0){
+			alert("처음 사진입니다.");
+			count++;
+		}else{
+			document.getElementById("big").src="../images/"+photo[count];
+		}
+	}
+	</script>
+</head>
+<body onLoad="init()">
+<div id="wrapper">
+	<img width="100%" id="big">
+	<div id="controller">
+		<img src="../images/left.png" id="bt_prev" onClick="prev();">
+		<img src="../images/right.png" id="bt_next" onClick="next();">
+	</div>
+</div>
+</body>
+</html>
