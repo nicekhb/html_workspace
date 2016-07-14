@@ -5,12 +5,26 @@
 	<title>ChatA</title>
 	<link rel="stylesheet" type="text/css" href="/css/chat.css"/>
 	<script>
+	var area;
+	function init(){
+		area=document.getElementById("area");
+		inp=document.getElementById("inp");
+	}
+	function enter(obj){
+		//ChatB의 textarea의 값에 대화내용을 추가
+		var key=event.keyCode;
+		if(key==13){//enter
+			area.value+="A:"+obj.value+"\n";
+			opener.chatB.area.value+="A:"+obj.value+"\n";
+			obj.value="";
+		}
+	}
 	</script>
 </head>
-<body>
+<body onLoad="init()">
 <div id="wrapper">
-	<textarea>동해물과 백두산이</textarea>
-	<input type="text">
+	<textarea id="area"></textarea>
+	<input type="text" onKeyUp="enter(this)">
 </div>
 </body>
 </html>
