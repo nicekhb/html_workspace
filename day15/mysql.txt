@@ -1,0 +1,317 @@
+MariaDB [(none)]> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| test               |
++--------------------+
+4 rows in set (0.02 sec)
+
+MariaDB [(none)]> CREATE DATABASE IOT;
+Query OK, 1 row affected (0.01 sec)
+
+MariaDB [(none)]> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| iot                |
+| mysql              |
+| performance_schema |
+| test               |
++--------------------+
+5 rows in set (0.00 sec)
+
+MariaDB [(none)]> USE IOT;
+Database changed
+MariaDB [IOT]> --------------------------------------------------------------
+MariaDB [IOT]> -- 기존 테이블 삭제
+MariaDB [IOT]> --------------------------------------------------------------
+MariaDB [IOT]> drop table dept;
+ERROR 1051 (42S02): Unknown table 'iot.dept'
+MariaDB [IOT]> drop table emp;
+ERROR 1051 (42S02): Unknown table 'iot.emp'
+MariaDB [IOT]>
+MariaDB [IOT]> --------------------------------------------------------------
+MariaDB [IOT]> -- 부서 테이블 생성/레코드 넣기
+MariaDB [IOT]> --------------------------------------------------------------
+MariaDB [IOT]> create table dept(
+    -> deptno int primary key auto_increment
+    -> ,dname varchar(14)
+    -> ,loc varchar(13)
+    -> );
+Query OK, 0 rows affected (0.20 sec)
+
+MariaDB [IOT]>
+MariaDB [IOT]> insert into dept(deptno,dname,loc) values(10,'ACCOUNTING','NEW YORK');
+Query OK, 1 row affected (0.05 sec)
+
+MariaDB [IOT]> insert into dept(deptno,dname,loc) values(20,'RESEARCH','DALLAS');
+Query OK, 1 row affected (0.02 sec)
+
+MariaDB [IOT]> insert into dept(deptno,dname,loc) values(30,'SALES','CHICAGO');
+Query OK, 1 row affected (0.03 sec)
+
+MariaDB [IOT]> insert into dept(deptno,dname,loc) values(40,'OPERATIONS','BOSTON');
+Query OK, 1 row affected (0.03 sec)
+
+MariaDB [IOT]>
+MariaDB [IOT]> --------------------------------------------------------------
+MariaDB [IOT]> -- 사원 테이블 생성/레코드 넣기
+MariaDB [IOT]> --------------------------------------------------------------
+MariaDB [IOT]>
+MariaDB [IOT]> create table emp(
+    -> empno int primary key auto_increment
+    -> ,ename varchar(10)
+    -> ,job varchar(9)
+    -> ,mgr int
+    -> ,hiredate timestamp
+    -> ,sal int
+    -> ,comm int
+    -> ,deptno int
+    -> );
+Query OK, 0 rows affected (0.16 sec)
+
+MariaDB [IOT]>
+MariaDB [IOT]> insert into emp(empno,ename,job,mgr,hiredate,sal,deptno) values(7369,'SMITH','CLERK',79
+Query OK, 1 row affected (0.02 sec)
+
+MariaDB [IOT]> insert into emp(empno,ename,job,mgr,hiredate,sal,comm,deptno) values(7499,'ALLEN','SALE
+Query OK, 1 row affected (0.02 sec)
+
+MariaDB [IOT]> insert into emp(empno,ename,job,mgr,hiredate,sal,comm,deptno) values(7521,'WARD','SALES
+Query OK, 1 row affected (0.03 sec)
+
+MariaDB [IOT]> insert into emp(empno,ename,job,mgr,hiredate,sal,deptno) values(7566,'JONES','MANAGER',
+Query OK, 1 row affected (0.03 sec)
+
+MariaDB [IOT]> insert into emp(empno,ename,job,mgr,hiredate,sal,comm,deptno) values(7654,'MARTIN','SAL
+Query OK, 1 row affected (0.02 sec)
+
+MariaDB [IOT]> insert into emp(empno,ename,job,mgr,hiredate,sal,deptno) values(7698,'BLAKE','MANAGER',
+Query OK, 1 row affected (0.01 sec)
+
+MariaDB [IOT]> insert into emp(empno,ename,job,mgr,hiredate,sal,deptno) values(7782,'CLARK','MANAGER',
+Query OK, 1 row affected (0.03 sec)
+
+MariaDB [IOT]> insert into emp(empno,ename,job,mgr,hiredate,sal,deptno) values(7788,'SCOTT','ANALYST',
+Query OK, 1 row affected (0.02 sec)
+
+MariaDB [IOT]> insert into emp(empno,ename,job,hiredate,sal,deptno) values(7839,'KING','PRESIDENT','81
+Query OK, 1 row affected (0.03 sec)
+
+MariaDB [IOT]> insert into emp(empno,ename,job,mgr,hiredate,sal,comm,deptno) values(7844,'TURNER','SAL
+Query OK, 1 row affected (0.03 sec)
+
+MariaDB [IOT]> insert into emp(empno,ename,job,mgr,hiredate,sal,deptno) values(7876,'ADAMS','CLERK',77
+Query OK, 1 row affected (0.02 sec)
+
+MariaDB [IOT]> insert into emp(empno,ename,job,mgr,hiredate,sal,deptno) values(7900,'JAMES','CLERK',76
+Query OK, 1 row affected (0.03 sec)
+
+MariaDB [IOT]> insert into emp(empno,ename,job,mgr,hiredate,sal,deptno) values(7902,'FORD','ANALYST',7
+Query OK, 1 row affected (0.03 sec)
+
+MariaDB [IOT]> insert into emp(empno,ename,job,mgr,hiredate,sal,deptno) values(7934,'MILLER','CLERK',7
+Query OK, 1 row affected (0.03 sec)
+
+MariaDB [IOT]>
+MariaDB [IOT]> SHOW TABLES'
+    '> ;
+    '>
+    '> ^Z
+    '> ^D^D
+    '> '
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your Ma
+;
+
+
+
+'' at line 1
+MariaDB [IOT]> SHOW TABLES;
++---------------+
+| Tables_in_iot |
++---------------+
+| dept          |
+| emp           |
++---------------+
+2 rows in set (0.00 sec)
+
+MariaDB [IOT]> SELECT * FROM EMP;
++-------+--------+-----------+------+---------------------+------+------+--------+
+| empno | ename  | job       | mgr  | hiredate            | sal  | comm | deptno |
++-------+--------+-----------+------+---------------------+------+------+--------+
+|  7369 | SMITH  | CLERK     | 7902 | 1980-12-17 00:00:00 |  800 | NULL |     20 |
+|  7499 | ALLEN  | SALESMAN  | 7698 | 1981-02-20 00:00:00 | 1600 |  300 |     30 |
+|  7521 | WARD   | SALESMAN  | 7698 | 1981-02-22 00:00:00 | 1250 |  500 |     30 |
+|  7566 | JONES  | MANAGER   | 7839 | 1981-04-02 00:00:00 | 2975 | NULL |     20 |
+|  7654 | MARTIN | SALESMAN  | 7698 | 1981-09-28 00:00:00 | 1250 | 1400 |     30 |
+|  7698 | BLAKE  | MANAGER   | 7839 | 1981-05-01 00:00:00 | 2850 | NULL |     30 |
+|  7782 | CLARK  | MANAGER   | 7839 | 1981-06-09 00:00:00 | 2450 | NULL |     10 |
+|  7788 | SCOTT  | ANALYST   | 7566 | 1987-04-19 00:00:00 | 3000 | NULL |     20 |
+|  7839 | KING   | PRESIDENT | NULL | 1981-11-17 00:00:00 | 5000 | NULL |     10 |
+|  7844 | TURNER | SALESMAN  | 7698 | 1981-09-08 00:00:00 | 1500 |    0 |     30 |
+|  7876 | ADAMS  | CLERK     | 7788 | 1987-05-23 00:00:00 | 1100 | NULL |     20 |
+|  7900 | JAMES  | CLERK     | 7698 | 1981-12-03 00:00:00 |  950 | NULL |     30 |
+|  7902 | FORD   | ANALYST   | 7566 | 1981-12-03 00:00:00 | 3000 | NULL |     20 |
+|  7934 | MILLER | CLERK     | 7782 | 1982-01-23 00:00:00 | 1300 | NULL |     10 |
++-------+--------+-----------+------+---------------------+------+------+--------+
+14 rows in set (0.00 sec)
+
+MariaDB [IOT]> SELECT * FROM DEPT;
++--------+------------+----------+
+| deptno | dname      | loc      |
++--------+------------+----------+
+|     10 | ACCOUNTING | NEW YORK |
+|     20 | RESEARCH   | DALLAS   |
+|     30 | SALES      | CHICAGO  |
+|     40 | OPERATIONS | BOSTON   |
++--------+------------+----------+
+4 rows in set (0.00 sec)
+
+MariaDB [IOT]> DELETE FROM EMP WHERE EMPNO='7566';
+Query OK, 1 row affected (0.01 sec)
+
+MariaDB [IOT]> SELECT * FROM EMP;
++-------+--------+-----------+------+---------------------+------+------+--------+
+| empno | ename  | job       | mgr  | hiredate            | sal  | comm | deptno |
++-------+--------+-----------+------+---------------------+------+------+--------+
+|  7369 | SMITH  | CLERK     | 7902 | 1980-12-17 00:00:00 |  800 | NULL |     20 |
+|  7499 | ALLEN  | SALESMAN  | 7698 | 1981-02-20 00:00:00 | 1600 |  300 |     30 |
+|  7521 | WARD   | SALESMAN  | 7698 | 1981-02-22 00:00:00 | 1250 |  500 |     30 |
+|  7654 | MARTIN | SALESMAN  | 7698 | 1981-09-28 00:00:00 | 1250 | 1400 |     30 |
+|  7698 | BLAKE  | MANAGER   | 7839 | 1981-05-01 00:00:00 | 2850 | NULL |     30 |
+|  7782 | CLARK  | MANAGER   | 7839 | 1981-06-09 00:00:00 | 2450 | NULL |     10 |
+|  7788 | SCOTT  | ANALYST   | 7566 | 1987-04-19 00:00:00 | 3000 | NULL |     20 |
+|  7839 | KING   | PRESIDENT | NULL | 1981-11-17 00:00:00 | 5000 | NULL |     10 |
+|  7844 | TURNER | SALESMAN  | 7698 | 1981-09-08 00:00:00 | 1500 |    0 |     30 |
+|  7876 | ADAMS  | CLERK     | 7788 | 1987-05-23 00:00:00 | 1100 | NULL |     20 |
+|  7900 | JAMES  | CLERK     | 7698 | 1981-12-03 00:00:00 |  950 | NULL |     30 |
+|  7902 | FORD   | ANALYST   | 7566 | 1981-12-03 00:00:00 | 3000 | NULL |     20 |
+|  7934 | MILLER | CLERK     | 7782 | 1982-01-23 00:00:00 | 1300 | NULL |     10 |
++-------+--------+-----------+------+---------------------+------+------+--------+
+13 rows in set (0.00 sec)
+
+MariaDB [IOT]> SELECT * FROM EMP ORDER BY SAL DESC;
++-------+--------+-----------+------+---------------------+------+------+--------+
+| empno | ename  | job       | mgr  | hiredate            | sal  | comm | deptno |
++-------+--------+-----------+------+---------------------+------+------+--------+
+|  7839 | KING   | PRESIDENT | NULL | 1981-11-17 00:00:00 | 5000 | NULL |     10 |
+|  7788 | SCOTT  | ANALYST   | 7566 | 1987-04-19 00:00:00 | 3000 | NULL |     20 |
+|  7902 | FORD   | ANALYST   | 7566 | 1981-12-03 00:00:00 | 3000 | NULL |     20 |
+|  7698 | BLAKE  | MANAGER   | 7839 | 1981-05-01 00:00:00 | 2850 | NULL |     30 |
+|  7782 | CLARK  | MANAGER   | 7839 | 1981-06-09 00:00:00 | 2450 | NULL |     10 |
+|  7499 | ALLEN  | SALESMAN  | 7698 | 1981-02-20 00:00:00 | 1600 |  300 |     30 |
+|  7844 | TURNER | SALESMAN  | 7698 | 1981-09-08 00:00:00 | 1500 |    0 |     30 |
+|  7934 | MILLER | CLERK     | 7782 | 1982-01-23 00:00:00 | 1300 | NULL |     10 |
+|  7654 | MARTIN | SALESMAN  | 7698 | 1981-09-28 00:00:00 | 1250 | 1400 |     30 |
+|  7521 | WARD   | SALESMAN  | 7698 | 1981-02-22 00:00:00 | 1250 |  500 |     30 |
+|  7876 | ADAMS  | CLERK     | 7788 | 1987-05-23 00:00:00 | 1100 | NULL |     20 |
+|  7900 | JAMES  | CLERK     | 7698 | 1981-12-03 00:00:00 |  950 | NULL |     30 |
+|  7369 | SMITH  | CLERK     | 7902 | 1980-12-17 00:00:00 |  800 | NULL |     20 |
++-------+--------+-----------+------+---------------------+------+------+--------+
+13 rows in set (0.02 sec)
+
+MariaDB [IOT]> --급여가 1000미만인 사원을 삭제하시오
+MariaDB [IOT]> DELETE FROM EMP WHERE SAL<1000;
+Query OK, 2 rows affected (0.02 sec)
+
+MariaDB [IOT]> SELECT * FROM EMP ORDER BY SAL DESC;
++-------+--------+-----------+------+---------------------+------+------+--------+
+| empno | ename  | job       | mgr  | hiredate            | sal  | comm | deptno |
++-------+--------+-----------+------+---------------------+------+------+--------+
+|  7839 | KING   | PRESIDENT | NULL | 1981-11-17 00:00:00 | 5000 | NULL |     10 |
+|  7788 | SCOTT  | ANALYST   | 7566 | 1987-04-19 00:00:00 | 3000 | NULL |     20 |
+|  7902 | FORD   | ANALYST   | 7566 | 1981-12-03 00:00:00 | 3000 | NULL |     20 |
+|  7698 | BLAKE  | MANAGER   | 7839 | 1981-05-01 00:00:00 | 2850 | NULL |     30 |
+|  7782 | CLARK  | MANAGER   | 7839 | 1981-06-09 00:00:00 | 2450 | NULL |     10 |
+|  7499 | ALLEN  | SALESMAN  | 7698 | 1981-02-20 00:00:00 | 1600 |  300 |     30 |
+|  7844 | TURNER | SALESMAN  | 7698 | 1981-09-08 00:00:00 | 1500 |    0 |     30 |
+|  7934 | MILLER | CLERK     | 7782 | 1982-01-23 00:00:00 | 1300 | NULL |     10 |
+|  7654 | MARTIN | SALESMAN  | 7698 | 1981-09-28 00:00:00 | 1250 | 1400 |     30 |
+|  7521 | WARD   | SALESMAN  | 7698 | 1981-02-22 00:00:00 | 1250 |  500 |     30 |
+|  7876 | ADAMS  | CLERK     | 7788 | 1987-05-23 00:00:00 | 1100 | NULL |     20 |
++-------+--------+-----------+------+---------------------+------+------+--------+
+11 rows in set (0.00 sec)
+
+MariaDB [IOT]> UPDATE FROM EMP SET ENAME='마틴' WHERE EMPNO='7654';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your Ma
+M EMP SET ENAME='마틴' WHERE EMPNO='7654'' at line 1
+MariaDB [IOT]> UPDATE EMP SET ENAME='마틴' WHERE EMPNO='7654';
+Query OK, 1 row affected, 1 warning (0.03 sec)
+Rows matched: 1  Changed: 1  Warnings: 1
+
+MariaDB [IOT]> SELECT * FROM EMP;
++-------+--------+-----------+------+---------------------+------+------+--------+
+| empno | ename  | job       | mgr  | hiredate            | sal  | comm | deptno |
++-------+--------+-----------+------+---------------------+------+------+--------+
+|  7499 | ALLEN  | SALESMAN  | 7698 | 1981-02-20 00:00:00 | 1600 |  300 |     30 |
+|  7521 | WARD   | SALESMAN  | 7698 | 1981-02-22 00:00:00 | 1250 |  500 |     30 |
+|  7654 | ??     | SALESMAN  | 7698 | 2016-07-15 16:17:29 | 1250 | 1400 |     30 |
+|  7698 | BLAKE  | MANAGER   | 7839 | 1981-05-01 00:00:00 | 2850 | NULL |     30 |
+|  7782 | CLARK  | MANAGER   | 7839 | 1981-06-09 00:00:00 | 2450 | NULL |     10 |
+|  7788 | SCOTT  | ANALYST   | 7566 | 1987-04-19 00:00:00 | 3000 | NULL |     20 |
+|  7839 | KING   | PRESIDENT | NULL | 1981-11-17 00:00:00 | 5000 | NULL |     10 |
+|  7844 | TURNER | SALESMAN  | 7698 | 1981-09-08 00:00:00 | 1500 |    0 |     30 |
+|  7876 | ADAMS  | CLERK     | 7788 | 1987-05-23 00:00:00 | 1100 | NULL |     20 |
+|  7902 | FORD   | ANALYST   | 7566 | 1981-12-03 00:00:00 | 3000 | NULL |     20 |
+|  7934 | MILLER | CLERK     | 7782 | 1982-01-23 00:00:00 | 1300 | NULL |     10 |
++-------+--------+-----------+------+---------------------+------+------+--------+
+11 rows in set (0.00 sec)
+
+MariaDB [IOT]> --테이블 생성시 다국어 지원하기
+MariaDB [IOT]> CREATE TABLE TEST(
+    -> NAME VARCHAR(20)
+    -> ) DEFAULT CHARSET UTF8;
+Query OK, 0 rows affected (0.14 sec)
+
+MariaDB [IOT]> SHOW TABLES;
++---------------+
+| Tables_in_iot |
++---------------+
+| dept          |
+| emp           |
+| test          |
++---------------+
+3 rows in set (0.00 sec)
+
+MariaDB [IOT]> SELECT * FROM TEST;
+Empty set (0.00 sec)
+
+MariaDB [IOT]> INSERT INTO TEST(NAME) VALUES('김학봉');
+Query OK, 1 row affected (0.03 sec)
+
+MariaDB [IOT]> SELECT * FROM TEST;
++--------+
+| NAME   |
++--------+
+| 김학봉 |
++--------+
+1 row in set (0.06 sec)
+
+MariaDB [IOT]>
+
+
+MariaDB [IOT]> CREATE TABLE MEMBER(
+    -> NAME VARCHAR(20),
+    -> PHONE VARCHAR(13),
+    -> AGE INT,
+    -> REGDATE TIMESTAMP DEFAULT NOW()
+    -> ) DEFAULT CHARSET UTF8;
+Query OK, 0 rows affected (0.17 sec)
+
+MariaDB [IOT]> DESC MEMBER;
++---------+-------------+------+-----+-------------------+-------+
+| Field   | Type        | Null | Key | Default           | Extra |
++---------+-------------+------+-----+-------------------+-------+
+| NAME    | varchar(20) | YES  |     | NULL              |       |
+| PHONE   | varchar(13) | YES  |     | NULL              |       |
+| AGE     | int(11)     | YES  |     | NULL              |       |
+| REGDATE | timestamp   | NO   |     | CURRENT_TIMESTAMP |       |
++---------+-------------+------+-----+-------------------+-------+
+4 rows in set (0.00 sec)
+
+MariaDB [IOT]>

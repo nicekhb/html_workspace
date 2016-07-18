@@ -28,8 +28,14 @@
 		float:left;
 		width:100px;
 	}
+	select{
+		width:100px;
+		height:40px;
+		font-size:20pt;
+	}
 	</style>
 	<script src="../lib/DateBox.js"></script>
+	<script src="../lib/lib.js"></script>
 	<script>
 	var down;
 	var sel_yy;
@@ -43,13 +49,7 @@
 		sel_yy=document.getElementById("sel_yy");
 		sel_mm=document.getElementById("sel_mm");
 		sel_dd=document.getElementById("sel_dd");
-		for(var i=0;i<42;i++){
-			var datebox=new DateBox(down,100,100,i+1);
-			datebox.init();
-		}
-		getDate();
-	}
-	function getDate(){
+		
 		for(var i=2030;i>=1990;i--){
 			var option = document.createElement("option");
 			option.text=i;
@@ -60,15 +60,39 @@
 			option.text=i;
 			sel_mm.add(option);
 		}
+
+		createBox();
+	}
+	function deleteBox(){
+		down.innerText="";
+	}
+	function createBox(){
+		var d=new Date(sel_yy.value+"-"+sel_mm.value+"-1");
+		//d.setDate(0); //전달의 마지막날
+
+		var lastDate=getLastDate(sel_yy.value,sel_mm.value);
+		var n=1;
+		for(var i=0;i<42;i++){
+			if(i>=d.getDay()&&n<=lastDate){
+				var datebox=new DateBox(down,100,100,n++);
+			}else{
+				var datebox=new DateBox(down,100,100,"");
+			}
+			datebox.init();
+		}
+	}
+	function showCal(){
+		deleteBox();
+		createBox();
 	}
 	</script>
 </head>
 <body>
 <div id="wrapper">
-	<div id="up">
+	<div id="up" align="center">
 		<select id="sel_yy"></select>년도
 		<select id="sel_mm"></select>월
-		<input type="button" value="검색">
+		<input type="button" value="검색" onClick="showCal()">
 	</div>
 	<div id="dayTitle">
 		<ul>

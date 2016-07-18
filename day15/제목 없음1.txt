@@ -1,0 +1,5 @@
+oracle express 4g제한
+ -sun
+ -bea
+ -Mysql(커뮤니티-공짜)
+ MariaDB-(mysql같은엔진
