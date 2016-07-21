@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<title></title>
+	<style>
+		body{
+			margin:0px;
+		}
+		#wrapper{
+			width:802px;
+			height:832px;
+			border:1px solid black;
+		}
+		#score{
+			width:800px;
+			height:150px;
+			border:1px solid black;
+		}
+		#stage{
+			width:800px;
+			height:680px;
+			border:1px solid black;
+		}
+	</style>
+	<script src="./lib/Block.js"></script>
+	<script src="./lib/Hero.js"></script>
+	<script src="./lib/Box.js"></script>
+	<script src="./lib/Map.js"></script>
+	<script>
+		var blockSize=40;
+		var wSize=20;
+		var hSize=17;
+		var hero;
+		var heroX=0;
+		var heroY=0;
+		var boxes = new Array(20);
+		var meetBox=false;
+		var boxIndex=0;
+		var boxX=0;
+		var boxY=0;
+		var boxCount=0;
+		var stage;
+		var stageCount=0;
+		var blocks;
+
+		window.addEventListener("load",function(){
+			init();
+		});
+
+		window.addEventListener("keydown",function(){
+			var key=event.keyCode;
+			
+			move(key);
+			if(checkComplete()){
+				if(stageCount<3){
+					stageCount++;
+					clearStage();
+					makeStage();
+				}else{
+					alert("¿Ï·á");
+				}
+			}
+		});
+		
+		function init(){
+			stage=document.getElementById("stage");
+	
+			makeStage();
+		
+		}
+
+		function clearStage(){
+			//block
+			for(var i=0;i<blocks.length;i++){
+				for(var j=0;j<blocks[i].length;j++){
+					stage.removeChild(blocks[i][j].div);
+				}
+			}
+			//box
+			for(var i=0;i<boxCount;i++){
+				stage.removeChild(boxes[i].img);
+			}
+			boxCount=0;
+			//hero
+			stage.removeChild(hero.img);
+		}
+
+		function makeStage(){
+			blocks=new Array(hSize);
+			for(var i=0;i<map[stageCount].length;i++){
+				blocks[i]=new Array(wSize);
+				for(var j=0;j<map[stageCount][i].length;j++){
+					var block=new Block(stage,blockSize,blockSize,j,i,map[stageCount][i][j]);
+					block.init();
+					blocks[i][j]=block;
+					if(map[stageCount][i][j]=="7"){
+						heroX=j;
+						heroY=i;
+					}else if(map[stageCount][i][j]=="8"){
+						boxX=j;
+						boxY=i;
+						var box=new Box(stage,blockSize,blockSize,blockSize*boxX+2,blockSize*boxY+153,j,i);
+						box.init();
+						boxes[boxCount++]=box;
+						blocks[i][j].pass=false;
+					}
+				}
+			}
+
+			hero=new Hero(stage,blockSize-2,blockSize-2,blockSize*heroX+3,blockSize*heroY+155);
+			hero.init();
+		}
+
+		function move(key){
+			meetBox=false;
+			switch(key){
+				case 37:
+					for(var i=0;i<boxCount;i++){
+						if(boxes[i].boxX==(heroX-1)&&boxes[i].boxY==heroY){
+							meetBox=true;
+							boxIndex=i;
+						}
+					}
+					if(meetBox){
+						if(heroX>0){
+							if(blocks[heroY][heroX-2].pass){
+								hero.x-=blockSize;
+								heroX--;
+								boxes[boxIndex].x-=blockSize;
+								boxes[boxIndex].boxX--;
+								blocks[boxes[boxIndex].boxY][boxes[boxIndex].boxX+1].pass=true;
+								blocks[boxes[boxIndex].boxY][boxes[boxIndex].boxX].pass=false;
+							}
+						}
+					}else{
+						if(heroX>0){
+							if(blocks[heroY][heroX-1].pass){
+								hero.x-=blockSize;
+								heroX--;
+							}
+						}
+					}
+					break;
+				case 38:
+					for(var i=0;i<boxCount;i++){
+						if(boxes[i].boxX==heroX&&boxes[i].boxY==(heroY-1)){
+							meetBox=true;
+							boxIndex=i;
+						}
+					}
+					if(meetBox){
+						if(heroX>0){
+							if(blocks[heroY-2][heroX].pass){
+								hero.y-=blockSize;
+								heroY--;
+								boxes[boxIndex].y-=blockSize;
+								boxes[boxIndex].boxY--;
+								blocks[boxes[boxIndex].boxY+1][boxes[boxIndex].boxX].pass=true;
+								blocks[boxes[boxIndex].boxY][boxes[boxIndex].boxX].pass=false;
+							}
+						}
+					}else{
+						if(heroY>0){
+							if(blocks[heroY-1][heroX].pass){
+								hero.y-=blockSize;
+								heroY--;
+							}
+						}
+					}
+					break;
+				case 39:
+					for(var i=0;i<boxCount;i++){
+						if(boxes[i].boxX==(heroX+1)&&boxes[i].boxY==heroY){
+							meetBox=true;
+							boxIndex=i;
+						}
+					}
+					if(meetBox){
+						if(heroX<wSize-1){
+							if(blocks[heroY][heroX+2].pass){
+								hero.x+=blockSize;
+								heroX++;
+								boxes[boxIndex].x+=blockSize;
+								boxes[boxIndex].boxX++;
+								blocks[boxes[boxIndex].boxY][boxes[boxIndex].boxX-1].pass=true;
+								blocks[boxes[boxIndex].boxY][boxes[boxIndex].boxX].pass=false;
+							}
+						}
+					}else{
+						if(heroX<wSize-1){
+							if(blocks[heroY][heroX+1].pass){
+								hero.x+=blockSize;
+								heroX++;
+							}
+						}
+					}
+					break;
+				case 40:
+					for(var i=0;i<boxCount;i++){
+						if(boxes[i].boxX==heroX&&boxes[i].boxY==(heroY+1)){
+							meetBox=true;
+							boxIndex=i;
+						}
+					}
+					if(meetBox){
+						if(heroY<hSize-1){
+							if(blocks[heroY+2][heroX].pass){
+								hero.y+=blockSize;
+								heroY++;
+								boxes[boxIndex].y+=blockSize;
+								boxes[boxIndex].boxY++;
+								blocks[boxes[boxIndex].boxY-1][boxes[boxIndex].boxX].pass=true;
+								blocks[boxes[boxIndex].boxY][boxes[boxIndex].boxX].pass=false;
+							}
+						}
+					}else{
+						if(heroY<hSize-1){
+							if(blocks[heroY+1][heroX].pass){
+								hero.y+=blockSize;
+								heroY++;
+							}
+						}
+					}
+					break;
+			}
+		}
+
+		function checkComplete(){
+			var g=0;
+			var comp=0;
+			for(var i=0;i<blocks.length;i++){
+				for(var j=0;j<blocks[i].length;j++){
+					if(blocks[i][j].type==1){
+						g++;
+					}
+				}
+			}
+			for(var i=0;i<blocks.length;i++){
+				for(var j=0;j<blocks[i].length;j++){
+					if(blocks[i][j].type==1&&blocks[i][j].pass==false){
+						comp++;
+					}
+				}
+			}
+			if(g==comp){
+				return true;
+			}else{
+				return false;
+			}
+		}
+	</script>
+</head>
+<body>
+	<div id="wrapper">
+		<div id="score"></div>
+		<div id="stage"></div>
+	</div>
+</body>
+</html>
