@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>게임2</title>
+	<style>
+		body{
+			margin:0px;
+		}
+		#wrapper{
+			width:802px;
+			height:832px;
+			border:1px solid black;
+			background:black;
+		}
+		#score{
+			width:800px;
+			height:150px;
+			border:2px solid yellow;
+			background:black;
+		}
+		#stage{
+			width:800px;
+			height:680px;
+			background-Image:url("./images/bg.png");
+			border:2px solid pink;
+			overflow-y:hidden;
+		}
+	</style>
+	<script src="./lib/Hero.js"></script>
+	<script src="./lib/Arrow.js"></script>
+	<script src="./lib/Ball.js"></script>
+	<script src="./lib/lib.js"></script>
+	<script>
+		var stage;
+		var score;
+		var hero;
+		var arrow;
+		var breakCount=0;
+		var bgX=0;
+		
+		window.addEventListener("load",function(){
+			init();
+		});
+
+		window.addEventListener("keydown",function(){
+			var key=event.keyCode;
+
+			switch(key){
+				case 37:hero.velX=-2;break;
+				case 39:hero.velX=2;break;
+				case 32:fire();break;
+			}
+		});
+
+		window.addEventListener("keyup",function(){
+			if(event.keyCode==37 || event.keyCode==39){
+				hero.velX=0;
+			}
+		});
+		
+		function init(){
+			stage=document.getElementById("stage");
+			score=document.getElementById("score");
+
+			makeScore();
+			
+			arrow=new Arrow(stage,385,617);
+			arrow.init();
+		
+			hero=new Hero(stage,60,80,375,605,arrow);
+			hero.init();
+
+			var ball=new Ball(stage,100,100,300,100,"./images/ball.png",hero,arrow,2,3);
+			ball.init();
+			var ball2=new Ball(stage,100,100,600,100,"./images/ball2.png",hero,arrow,-2,3);
+			ball2.init();
+
+			bgEffect();
+		}
+
+		function fire(){
+			arrow.fire();
+		}
+		function makeScore(){
+			var img=document.createElement("img");
+			img.src="./images/hellokitty.gif";
+			img.style.width=150+"px";
+			img.style.height=150+"px";
+
+			stage_board=document.createElement("canvas");
+			stage_board.style.width=600+"px";
+			stage_board.style.height=150+"px";
+			ctx=stage_board.getContext("2d");
+			var gradient=ctx.createLinearGradient(100,0,stage_board.width,stage_board.height);
+			gradient.addColorStop("0","magenta");
+			gradient.addColorStop("0.3","blue");
+			gradient.addColorStop("0.7","red");
+			gradient.addColorStop("1.0","yellow");
+			ctx.font="100pt Verdana";
+			ctx.fillStyle=gradient;
+			ctx.fillText("아이디어고갈..",0,120,300);
+
+			score.appendChild(img);
+			score.appendChild(stage_board);
+		}
+		function bgEffect(){
+			bgX-=hero.velX;
+			stage.style.backgroundPosition=bgX+"px 0px";
+			setTimeout("bgEffect()",15);
+		}
+
+	</script>
+</head>
+<body bgcolor="black">
+	<div id="wrapper">
+		<div id="stage"></div>
+		<div id="score"></div>
+	</div>
+</body>
+</html>

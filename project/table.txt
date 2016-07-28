@@ -1,0 +1,9 @@
+create table memo(
+    -> no int primary key auto_increment
+    -> ,name varchar(10)
+    -> ,password varchar(10)
+    -> ,contents varchar(100)
+
+
+REGDATE TIMESTAMP DEFAULT NOW()
+    -> ) DEFAULT CHARSET UTF8;

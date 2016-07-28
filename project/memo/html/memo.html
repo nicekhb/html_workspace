@@ -1,0 +1,138 @@
+<%var totalPage=Math.ceil(rowCount[0].rows/5);%>
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>방명록</title>
+	<style>
+		body{
+			margin:0px;
+		}
+		a{
+			text-decoration:none;
+		}
+		#stage{
+			width:800px;
+			height:830px;
+			background:white;
+			border:1px solid #ff00ff;
+		}
+		#inputForm{
+			width:350px;
+			height:140px;
+			background:yellow;
+			-webkit-animation: mymove 3s infinite;
+			-webkit-animation-direction: alternate;
+			position:absolute;
+			left:15px;
+			top:300px;
+			text-align:center;
+		}
+		@-webkit-keyframes mymove {
+			from {background-color: yellow;}
+			to {background-color: #00cc00;}
+		}
+		#listDiv{
+			width:410px;
+			height:810px;
+			position:absolute;
+			left:380px;
+			top:10px;
+			background:white;
+			border:1px solid #ff00ff;
+			border-radius:10px;
+			opacity: 0.8;
+			text-align:center;
+			overflow:auto;
+		}
+		#pageDiv{
+			width:300px;
+			height:100px;
+			position:absolute;
+			left:40px;
+			top:450px;
+			text-align:center;
+		}
+	</style>
+	<script>
+		var stage;
+		var listDiv;
+		var inputForm;
+		var bt;
+		window.addEventListener("load",function(){
+			init();			
+		});
+		function init(){
+			stage=document.getElementById("stage");
+			listDiv=document.getElementById("listDiv");
+			stage.style.backgroundImage="url('/images/wall.jpg')";
+			inputForm=document.getElementById("inputForm");
+			bt=document.getElementById("bt");
+			bt.addEventListener("click",function(){
+				regist();
+			});
+		}
+		function regist(){
+			if(!form1.name.value){
+				alert("작성자를 입력하세요");
+				form1.name.focus();
+				return;
+			}
+			if(!form1.pwd.value){
+				alert("암호를 입력하세요");
+				form1.pwd.focus();
+				return;
+			}
+			if(!form1.ta.value){
+				alert("내용을 입력하세요");
+				form1.ta.focus();
+				return;
+			}
+			form1.action="/regist";
+			form1.submit();
+		}
+		function deleteMemo(no,password){
+			var pwd=prompt("작성시 입력한 비밀번호를 입력하세요.");
+			if(pwd==password){
+				location.href="http://localhost:8286/delete/"+no;
+			}else{
+				alert("비밀번호가 틀립니다.");
+			}
+		}
+	</script>
+</head>
+<body bgcolor="black">
+<div id="stage">
+	<div id="inputForm">
+		<form name="form1" method="post">
+			작성자:<input type="text" size="10" name="name">암호<input type="password" size="8" name="pwd">
+			<input type="button" value="작성" id="bt">
+			<textarea name="ta" rows="6" cols="45"></textarea>
+		</form>
+	</div>
+	<div id="pageDiv">
+		<%for(var i=1;i<=totalPage;i++){%>
+			<a href="/memo/<%=i%>">[<%=i%>]</a>
+		<%}%>
+	</div>
+	<div id="listDiv">
+	<%for(var i=0;i<dataList.length;i++){%>
+		<div style="width:380px;height:auto;float:left;">
+			<div style="width:130px;height:25px;float:left;">
+				<%=dataList[i].name%>
+			</div>
+			<div style="width:160px;height:25px;float:left;">
+				<%=dataList[i].regdate%>
+			</div>	
+			<div style="width:90px;height:25px;float:left;">
+				<a href="javascript:deleteMemo(<%=dataList[i].no+",'"+dataList[i].password+"'"%>)">삭제</a>
+			</div>
+			<div style="width:365px;height:auto;min-height:100px;float:left;text-align:left;border: 10px solid transparent;padding: 3px;border-image-slice: 30;border-image-source: url('/images/border.png');">
+				<pre style="width:360px;height:auto;overflow:auto;"><%=dataList[i].contents%></pre>
+			</div>
+		</div>
+	<%}%>
+	</div>
+</div>
+</body>
+</html>

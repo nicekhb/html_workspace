@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>자바스크립트 프로젝트</title>
+	<style>
+		body{
+			margin:0px;
+		}
+		#stage{
+			width:800px;
+			height:830px;
+			background-Image:url("./images/intro.png");
+			font-size:40pt;
+			color:pink;
+			border:1px solid #ff00ff;
+		}
+		#introTitle{
+			position:absolute;
+			color:#ff0066;
+			font-weight:bold;
+		}
+		#pressKey{
+			position:absolute;
+			left:200px;
+			top:600px;
+			color:#330000;
+			font-weight:bold;
+		}
+	</style>
+	<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.12.4.min.js"></script>
+	<script>
+		window.addEventListener("load",function(){
+			init();			
+		});
+
+		window.addEventListener("keyup",function(){
+			if(event.keyCode==13){
+				location.href="game.html";
+			}
+		});
+
+		function init(){
+			document.getElementById("music").play();
+
+			$("#introTitle").animate({left:"140px",opacity:"0.6"},"slow");
+			$("#introTitle").animate({fontSize:"5em"},"slow");
+
+			blink();
+		}
+
+		function blink(){
+			$("#pressKey").fadeToggle(1000);
+			setTimeout("blink()",1000);
+		}
+
+	</script>
+</head>
+<body bgcolor="black">
+<audio id="music">
+	<source id="introSound" src="./sound/intro.mp3" type="audio/mpeg">
+</audio>
+<div id="stage">
+	<div id="introTitle">게임</div>
+	<div id="pressKey">Press Enter Key..</div>
+</div>
+</body>
+</html>

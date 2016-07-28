@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<title>∞‘¿”</title>
+	<style>
+		body{
+			margin:0px;
+			/*background-Image:url("./images/bg.jpg");*/
+		}
+		#wrapper{
+			width:802px;
+			height:832px;
+			border:1px solid black;
+			background:black;
+		}
+		#score{
+			width:800px;
+			height:150px;
+			border:2px solid yellow;
+			background:black;
+		}
+		#stage{
+			width:800px;
+			height:680px;
+			border:2px solid pink;
+		}
+	</style>
+	<script src="./lib/Block.js"></script>
+	<script src="./lib/Hero.js"></script>
+	<script src="./lib/Box.js"></script>
+	<script src="./lib/Map.js"></script>
+	<script>
+		var blockSize=40;
+		var wSize=20;
+		var hSize=17;
+		var hero;
+		var heroX=0;
+		var heroY=0;
+		var boxes = new Array(20);
+		var meetBox=false;
+		var boxIndex=0;
+		var boxX=0;
+		var boxY=0;
+		var boxCount=0;
+		var stage;
+		var score;
+		var stageCount=0;
+		var blocks;
+		var stage_board;
+		var step_board;
+		var step=0;
+		var sound;
+		var ctx;
+		
+		window.addEventListener("load",function(){
+			init();
+		});
+
+		window.addEventListener("keydown",function(){
+			var key=event.keyCode;
+		
+			if(key==82){
+				clearStage();
+				makeStage();
+				step=0;
+				step_board.innerText="Step = "+step;
+			}else if(key==77){
+				location.href="../index.html";
+			}else{
+				move(key);
+				if(checkComplete()){
+					if(stageCount<3){
+						stageCount++;
+						clearStage();
+						makeStage();
+						//stage_board.innerText="Stage"+(stageCount+1);
+						ctx.clearRect(0,0,stage_board.width,stage_board.height);
+						ctx.fillText("Stage"+(stageCount+1),10,120,300);
+						step=0;
+						step_board.innerText="Step = "+step;
+					}else{
+						var stageClearImg=document.createElement("img");
+						stageClearImg.src="./images/stageClear.png";
+						stageClearImg.style.width=500+"px";
+						stageClearImg.style.height=300+"px";
+						stageClearImg.style.position="absolute";
+						stageClearImg.style.left=150+"px";
+						stageClearImg.style.top=300+"px";
+
+						this.stage.appendChild(stageClearImg);
+
+						window.addEventListener("keydown",function(){
+							if(event.keyCode==13){
+								location.href="../index.html";
+							}
+						});
+					}
+				}
+			}
+		});
+		
+		function init(){
+			stage=document.getElementById("stage");
+			score=document.getElementById("score");
+			sound=document.getElementById("music");
+	
+			makeStage();
+			makeScore();
+		}
+
+		function clearStage(){
+			//block
+			for(var i=0;i<blocks.length;i++){
+				for(var j=0;j<blocks[i].length;j++){
+					stage.removeChild(blocks[i][j].div);
+				}
+			}
+			//box
+			for(var i=0;i<boxCount;i++){
+				stage.removeChild(boxes[i].img);
+			}
+			boxCount=0;
+			//hero
+			stage.removeChild(hero.img);
+		}
+
+		function makeStage(){
+			blocks=new Array(hSize);
+			for(var i=0;i<map[stageCount].length;i++){
+				blocks[i]=new Array(wSize);
+				for(var j=0;j<map[stageCount][i].length;j++){
+					var block=new Block(stage,blockSize,blockSize,j,i,map[stageCount][i][j]);
+					block.init();
+					blocks[i][j]=block;
+					if(map[stageCount][i][j]=="7"){
+						heroX=j;
+						heroY=i;
+					}else if(map[stageCount][i][j]=="8"){
+						boxX=j;
+						boxY=i;
+						var box=new Box(stage,blockSize,blockSize,blockSize*boxX+4,blockSize*boxY+156,j,i);
+						box.init();
+						boxes[boxCount++]=box;
+						blocks[i][j].pass=false;
+					}
+				}
+			}
+
+			hero=new Hero(stage,blockSize-2,blockSize-2,blockSize*heroX+4,blockSize*heroY+157);
+			hero.init();
+		}
+
+		function move(key){
+			meetBox=false;
+			switch(key){
+				case 37:
+					for(var i=0;i<boxCount;i++){
+						if(boxes[i].boxX==(heroX-1)&&boxes[i].boxY==heroY){
+							meetBox=true;
+							boxIndex=i;
+						}
+					}
+					if(meetBox){
+						if(heroX>0){
+							if(blocks[heroY][heroX-2].pass){
+								hero.x-=blockSize;
+								heroX--;
+								boxes[boxIndex].x-=blockSize;
+								boxes[boxIndex].boxX--;
+								blocks[boxes[boxIndex].boxY][boxes[boxIndex].boxX+1].pass=true;
+								blocks[boxes[boxIndex].boxY][boxes[boxIndex].boxX].pass=false;
+								step++;
+								step_board.innerText="Step = "+step;
+								sound.load();
+								sound.play();
+							}
+						}
+					}else{
+						if(heroX>0){
+							if(blocks[heroY][heroX-1].pass){
+								hero.x-=blockSize;
+								heroX--;
+								step++;
+								step_board.innerText="Step = "+step;
+								sound.load();
+								sound.play();
+							}
+						}
+					}
+					break;
+				case 38:
+					for(var i=0;i<boxCount;i++){
+						if(boxes[i].boxX==heroX&&boxes[i].boxY==(heroY-1)){
+							meetBox=true;
+							boxIndex=i;
+						}
+					}
+					if(meetBox){
+						if(heroX>0){
+							if(blocks[heroY-2][heroX].pass){
+								hero.y-=blockSize;
+								heroY--;
+								boxes[boxIndex].y-=blockSize;
+								boxes[boxIndex].boxY--;
+								blocks[boxes[boxIndex].boxY+1][boxes[boxIndex].boxX].pass=true;
+								blocks[boxes[boxIndex].boxY][boxes[boxIndex].boxX].pass=false;
+								step++;
+								step_board.innerText="Step = "+step;
+								sound.load();
+								sound.play();
+							}
+						}
+					}else{
+						if(heroY>0){
+							if(blocks[heroY-1][heroX].pass){
+								hero.y-=blockSize;
+								heroY--;
+								step++;
+								step_board.innerText="Step = "+step;
+								sound.load();
+								sound.play();
+							}
+						}
+					}
+					break;
+				case 39:
+					for(var i=0;i<boxCount;i++){
+						if(boxes[i].boxX==(heroX+1)&&boxes[i].boxY==heroY){
+							meetBox=true;
+							boxIndex=i;
+						}
+					}
+					if(meetBox){
+						if(heroX<wSize-1){
+							if(blocks[heroY][heroX+2].pass){
+								hero.x+=blockSize;
+								heroX++;
+								boxes[boxIndex].x+=blockSize;
+								boxes[boxIndex].boxX++;
+								blocks[boxes[boxIndex].boxY][boxes[boxIndex].boxX-1].pass=true;
+								blocks[boxes[boxIndex].boxY][boxes[boxIndex].boxX].pass=false;
+								step++;
+								step_board.innerText="Step = "+step;
+								sound.load();
+								sound.play();
+							}
+						}
+					}else{
+						if(heroX<wSize-1){
+							if(blocks[heroY][heroX+1].pass){
+								hero.x+=blockSize;
+								heroX++;
+								step++;
+								step_board.innerText="Step = "+step;
+								sound.load();
+								sound.play();
+							}
+						}
+					}
+					break;
+				case 40:
+					for(var i=0;i<boxCount;i++){
+						if(boxes[i].boxX==heroX&&boxes[i].boxY==(heroY+1)){
+							meetBox=true;
+							boxIndex=i;
+						}
+					}
+					if(meetBox){
+						if(heroY<hSize-1){
+							if(blocks[heroY+2][heroX].pass){
+								hero.y+=blockSize;
+								heroY++;
+								boxes[boxIndex].y+=blockSize;
+								boxes[boxIndex].boxY++;
+								blocks[boxes[boxIndex].boxY-1][boxes[boxIndex].boxX].pass=true;
+								blocks[boxes[boxIndex].boxY][boxes[boxIndex].boxX].pass=false;
+								step++;
+								step_board.innerText="Step = "+step;
+								sound.load();
+								sound.play();
+							}
+						}
+					}else{
+						if(heroY<hSize-1){
+							if(blocks[heroY+1][heroX].pass){
+								hero.y+=blockSize;
+								heroY++;
+								step++;
+								step_board.innerText="Step = "+step;
+								sound.load();
+								sound.play();
+							}
+						}
+					}
+					break;
+			}
+		}
+
+		function checkComplete(){
+			var g=0;
+			var comp=0;
+			for(var i=0;i<blocks.length;i++){
+				for(var j=0;j<blocks[i].length;j++){
+					if(blocks[i][j].type==1){
+						g++;
+					}
+				}
+			}
+			for(var i=0;i<blocks.length;i++){
+				for(var j=0;j<blocks[i].length;j++){
+					if(blocks[i][j].type==1&&blocks[i][j].pass==false){
+						comp++;
+					}
+				}
+			}
+			if(g==comp){
+				return true;
+			}else{
+				return false;
+			}
+		}
+
+		function makeScore(){
+			var img=document.createElement("img");
+			img.src="./images/Hello_kitty.jpg";
+			img.style.width=150+"px";
+			img.style.height=150+"px";
+/*
+			stage_board=document.createElement("span");
+			stage_board.style.width=300+"px";
+			stage_board.style.height=150+"px";
+			stage_board.style.position="absolute";
+			stage_board.style.left=155+"px";
+			stage_board.style.top=-25+"px";
+			stage_board.style.color="yellow";
+			stage_board.style.fontSize=100+"pt";
+			stage_board.innerText="Stage"+(stageCount+1);
+			*/
+			stage_board=document.createElement("canvas");
+			stage_board.style.width=420+"px";
+			stage_board.style.height=150+"px";
+			ctx=stage_board.getContext("2d");
+			var gradient=ctx.createLinearGradient(0,0,stage_board.width,stage_board.height);
+			gradient.addColorStop("0","magenta");
+			gradient.addColorStop("0.5","blue");
+			gradient.addColorStop("1.0","red");
+			ctx.font="100pt Verdana";
+			ctx.fillStyle=gradient;
+			ctx.fillText("Stage"+(stageCount+1),0,120,290);
+
+			var div=document.createElement("div");
+			div.style.width=200+"px";
+			div.style.height=150+"px";
+			div.style.position="absolute";
+			div.style.left=600+"px";
+			div.style.top=2+"px";
+
+			var timeDiv=document.createElement("div");
+			timeDiv.style.width=199+"px";
+			timeDiv.style.height=100+"px";
+			timeDiv.style.color="yellow";
+			timeDiv.innerText="m : main menu\nr : current stage restart";
+
+			step_board=document.createElement("div");
+			step_board.style.width=199+"px";
+			step_board.style.height=50+"px";
+			step_board.style.color="yellow";
+			step_board.innerText="Step = "+step;
+
+			div.appendChild(timeDiv);
+			div.appendChild(step_board);
+
+			score.appendChild(img);
+			score.appendChild(stage_board);
+			score.appendChild(div);
+		}
+
+	</script>
+</head>
+<body bgcolor="black">
+	<audio id="music">
+		<source id="moveSound" src="./sound/move.mp3" type="audio/mpeg">
+	</audio>
+	<div id="wrapper">
+		<div id="score"></div>
+		<div id="stage"></div>
+	</div>
+</body>
+</html>

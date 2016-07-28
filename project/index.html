@@ -1,259 +1,145 @@
 <!doctype html>
 <html lang="en">
 <head>
-	<title></title>
+	<meta charset="UTF-8">
+	<title>자바스크립트 프로젝트</title>
 	<style>
 		body{
 			margin:0px;
 		}
-		#wrapper{
-			width:802px;
-			height:832px;
-			border:1px solid black;
-		}
-		#score{
-			width:800px;
-			height:150px;
-			border:1px solid black;
-		}
 		#stage{
 			width:800px;
-			height:680px;
-			border:1px solid black;
+			height:830px;
+			font-size:40pt;
+			background:white;
+			border:1px solid #ff00ff;
+		}
+		#clock{
+			width:320px;
+			height:100px;
+			position:absolute;
+			left:250px;
+			top:100px;
+			font-size:40pt;
+			-webkit-animation: mymove 2s infinite;
+			-webkit-animation-direction: alternate;
+		}
+		@-webkit-keyframes mymove {
+			from {font-size: 38pt;color:yellow;}
+			to {font-size: 42pt;color:blue;}
 		}
 	</style>
-	<script src="./lib/Block.js"></script>
-	<script src="./lib/Hero.js"></script>
-	<script src="./lib/Box.js"></script>
-	<script src="./lib/Map.js"></script>
 	<script>
-		var blockSize=40;
-		var wSize=20;
-		var hSize=17;
-		var hero;
-		var heroX=0;
-		var heroY=0;
-		var boxes = new Array(20);
-		var meetBox=false;
-		var boxIndex=0;
-		var boxX=0;
-		var boxY=0;
-		var boxCount=0;
 		var stage;
-		var stageCount=0;
-		var blocks;
+		var menu1;
+		var menu2;
+		var menu3;
+		var clock;
+		var sound;
 
 		window.addEventListener("load",function(){
-			init();
+			init();			
 		});
-
-		window.addEventListener("keydown",function(){
-			var key=event.keyCode;
-			
-			move(key);
-			if(checkComplete()){
-				if(stageCount<3){
-					stageCount++;
-					clearStage();
-					makeStage();
-				}else{
-					alert("�Ϸ�");
-				}
-			}
-		});
-		
 		function init(){
 			stage=document.getElementById("stage");
-	
-			makeStage();
-		
+			stage.style.backgroundImage="url(\"./images/bg.png\")";
+			clock=document.getElementById("clock");
+			sound=document.getElementById("sound");
+
+			menu1=document.createElement("img");
+			menu1.src="./images/menuicon1.png";
+			menu1.style.position="absolute";
+			menu1.style.width=150+"px";
+			menu1.style.height=150+"px";
+			menu1.style.left=300+"px";
+			menu1.style.top=180+"px";
+			menu1.addEventListener("mouseover", function(){
+				menu1.src="./images/menuicon1_1.png";
+				soundPlay();
+			});
+			menu1.addEventListener("mouseout", function(){
+				menu1.src="./images/menuicon1.png";
+			});
+			menu1.addEventListener("click", function(){
+				location.href="./game/intro.html";
+			});
+
+			menu2=document.createElement("img");
+			menu2.src="./images/menuicon2.png";
+			menu2.style.position="absolute";
+			menu2.style.width=150+"px";
+			menu2.style.height=150+"px";
+			menu2.style.left=100+"px";
+			menu2.style.top=450+"px";
+			menu2.addEventListener("mouseover", function(){
+				menu2.src="./images/menuicon2_2.png";
+				soundPlay();	
+			});
+			menu2.addEventListener("mouseout", function(){
+				menu2.src="./images/menuicon2.png";
+			});
+			menu2.addEventListener("click", function(){
+				window.open("http://localhost:8286/memo", "방명록", "width=810, height=840, left=100, top=50"); 
+			});
+
+			menu3=document.createElement("img");
+			menu3.src="./images/menuicon3.png";
+			menu3.style.position="absolute";
+			menu3.style.width=150+"px";
+			menu3.style.height=150+"px";
+			menu3.style.left=450+"px";
+			menu3.style.top=400+"px";
+			menu3.addEventListener("mouseover", function(){
+				menu3.src="./images/menuicon3_3.png";
+				soundPlay();
+			});
+			menu3.addEventListener("mouseout", function(){
+				menu3.src="./images/menuicon3.png";
+			});
+			menu3.addEventListener("click", function(){
+				location.href="./game2/game2.html";
+			});
+
+
+			stage.appendChild(menu1);
+			stage.appendChild(menu2);
+			stage.appendChild(menu3);
+
+			setInterval("updateClock()", 1000);
 		}
 
-		function clearStage(){
-			//block
-			for(var i=0;i<blocks.length;i++){
-				for(var j=0;j<blocks[i].length;j++){
-					stage.removeChild(blocks[i][j].div);
-				}
-			}
-			//box
-			for(var i=0;i<boxCount;i++){
-				stage.removeChild(boxes[i].img);
-			}
-			boxCount=0;
-			//hero
-			stage.removeChild(hero.img);
+		function soundPlay(){
+			sound.load();
+			sound.play();
 		}
 
-		function makeStage(){
-			blocks=new Array(hSize);
-			for(var i=0;i<map[stageCount].length;i++){
-				blocks[i]=new Array(wSize);
-				for(var j=0;j<map[stageCount][i].length;j++){
-					var block=new Block(stage,blockSize,blockSize,j,i,map[stageCount][i][j]);
-					block.init();
-					blocks[i][j]=block;
-					if(map[stageCount][i][j]=="7"){
-						heroX=j;
-						heroY=i;
-					}else if(map[stageCount][i][j]=="8"){
-						boxX=j;
-						boxY=i;
-						var box=new Box(stage,blockSize,blockSize,blockSize*boxX+2,blockSize*boxY+153,j,i);
-						box.init();
-						boxes[boxCount++]=box;
-						blocks[i][j].pass=false;
-					}
-				}
-			}
+		function updateClock(){
+			var time=new Date();
+			var hours=time.getHours();
+			var minutes=time.getMinutes();
+			var seconds=time.getSeconds();
 
-			hero=new Hero(stage,blockSize-2,blockSize-2,blockSize*heroX+3,blockSize*heroY+155);
-			hero.init();
+			minutes=((minutes<10)? "0":"")+minutes;
+			seconds = ((seconds<10)? "0":"")+seconds;
+
+			var amPm = (hours<12)? "AM":"PM";
+			hours = (hours>12)? hours-12 : hours;
+			hours = (hours==0 )? 12 : hours;
+
+			var timeString=hours+":"+minutes+":"+seconds+" "+amPm;
+
+			clock.innerText=timeString;
 		}
 
-		function move(key){
-			meetBox=false;
-			switch(key){
-				case 37:
-					for(var i=0;i<boxCount;i++){
-						if(boxes[i].boxX==(heroX-1)&&boxes[i].boxY==heroY){
-							meetBox=true;
-							boxIndex=i;
-						}
-					}
-					if(meetBox){
-						if(heroX>0){
-							if(blocks[heroY][heroX-2].pass){
-								hero.x-=blockSize;
-								heroX--;
-								boxes[boxIndex].x-=blockSize;
-								boxes[boxIndex].boxX--;
-								blocks[boxes[boxIndex].boxY][boxes[boxIndex].boxX+1].pass=true;
-								blocks[boxes[boxIndex].boxY][boxes[boxIndex].boxX].pass=false;
-							}
-						}
-					}else{
-						if(heroX>0){
-							if(blocks[heroY][heroX-1].pass){
-								hero.x-=blockSize;
-								heroX--;
-							}
-						}
-					}
-					break;
-				case 38:
-					for(var i=0;i<boxCount;i++){
-						if(boxes[i].boxX==heroX&&boxes[i].boxY==(heroY-1)){
-							meetBox=true;
-							boxIndex=i;
-						}
-					}
-					if(meetBox){
-						if(heroX>0){
-							if(blocks[heroY-2][heroX].pass){
-								hero.y-=blockSize;
-								heroY--;
-								boxes[boxIndex].y-=blockSize;
-								boxes[boxIndex].boxY--;
-								blocks[boxes[boxIndex].boxY+1][boxes[boxIndex].boxX].pass=true;
-								blocks[boxes[boxIndex].boxY][boxes[boxIndex].boxX].pass=false;
-							}
-						}
-					}else{
-						if(heroY>0){
-							if(blocks[heroY-1][heroX].pass){
-								hero.y-=blockSize;
-								heroY--;
-							}
-						}
-					}
-					break;
-				case 39:
-					for(var i=0;i<boxCount;i++){
-						if(boxes[i].boxX==(heroX+1)&&boxes[i].boxY==heroY){
-							meetBox=true;
-							boxIndex=i;
-						}
-					}
-					if(meetBox){
-						if(heroX<wSize-1){
-							if(blocks[heroY][heroX+2].pass){
-								hero.x+=blockSize;
-								heroX++;
-								boxes[boxIndex].x+=blockSize;
-								boxes[boxIndex].boxX++;
-								blocks[boxes[boxIndex].boxY][boxes[boxIndex].boxX-1].pass=true;
-								blocks[boxes[boxIndex].boxY][boxes[boxIndex].boxX].pass=false;
-							}
-						}
-					}else{
-						if(heroX<wSize-1){
-							if(blocks[heroY][heroX+1].pass){
-								hero.x+=blockSize;
-								heroX++;
-							}
-						}
-					}
-					break;
-				case 40:
-					for(var i=0;i<boxCount;i++){
-						if(boxes[i].boxX==heroX&&boxes[i].boxY==(heroY+1)){
-							meetBox=true;
-							boxIndex=i;
-						}
-					}
-					if(meetBox){
-						if(heroY<hSize-1){
-							if(blocks[heroY+2][heroX].pass){
-								hero.y+=blockSize;
-								heroY++;
-								boxes[boxIndex].y+=blockSize;
-								boxes[boxIndex].boxY++;
-								blocks[boxes[boxIndex].boxY-1][boxes[boxIndex].boxX].pass=true;
-								blocks[boxes[boxIndex].boxY][boxes[boxIndex].boxX].pass=false;
-							}
-						}
-					}else{
-						if(heroY<hSize-1){
-							if(blocks[heroY+1][heroX].pass){
-								hero.y+=blockSize;
-								heroY++;
-							}
-						}
-					}
-					break;
-			}
-		}
-
-		function checkComplete(){
-			var g=0;
-			var comp=0;
-			for(var i=0;i<blocks.length;i++){
-				for(var j=0;j<blocks[i].length;j++){
-					if(blocks[i][j].type==1){
-						g++;
-					}
-				}
-			}
-			for(var i=0;i<blocks.length;i++){
-				for(var j=0;j<blocks[i].length;j++){
-					if(blocks[i][j].type==1&&blocks[i][j].pass==false){
-						comp++;
-					}
-				}
-			}
-			if(g==comp){
-				return true;
-			}else{
-				return false;
-			}
-		}
 	</script>
 </head>
-<body>
-	<div id="wrapper">
-		<div id="score"></div>
-		<div id="stage"></div>
+<body bgcolor="black">
+<audio id="sound">
+	<source src="./sound/move.mp3" type="audio/mpeg">
+</audio>
+<div id="stage">
+	<div id="clock">
 	</div>
+</div>
 </body>
 </html>
